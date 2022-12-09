@@ -1935,7 +1935,7 @@ class _RegistrationState extends State<Registration> {
                 )
               ],
             ));
-        print("DataForResponse: ${data}");
+        print("DataForResponse: $data");
         print("Response ye hai : ${response.statusCode}");
       } else if (response.statusCode == 409) {
         Navigator.of(context).pop();
