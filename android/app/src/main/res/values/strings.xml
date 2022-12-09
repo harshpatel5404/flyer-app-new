@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Flyer App</string>
+    <string name="facebook_app_id">413444007480143</string>
+    <string name="fb_login_protocol_scheme">fb4413444007480143</string>
+    <string name="facebook_client_token">8a94d4853212bd8ac49e95c1f2500824</string>
+</resources>

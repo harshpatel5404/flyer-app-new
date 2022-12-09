@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "773833046270",
+    "project_id": "flyer-app-bee64",
+    "storage_bucket": "flyer-app-bee64.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:773833046270:android:c2c481250b010114480daf",
+        "android_client_info": {
+          "package_name": "flyerdistributor.randye.ridge.flyerapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "773833046270-vni9a41r0keu866gms5ttt6ju3l9hf2p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "flyerdistributor.randye.ridge.flyerapp",
+            "certificate_hash": "82f88197f2b0bd71419de1c17b8386f8c509c1ca"
+          }
+        },
+        {
+          "client_id": "773833046270-tg0ngf4i5aacs6lvrcrnuij5e7e6esfo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBkrYc1FsaHe4vcyB9q_KrKQtL8PkxdjyA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "773833046270-tg0ngf4i5aacs6lvrcrnuij5e7e6esfo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
