@@ -1,15 +1,14 @@
 import 'dart:async';
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flyerapp/Screens/Face%20Recognition/face_recognition.dart';
-import 'package:flyerapp/Screens/HomePage/PreferedLocation/prefered_location.dart';
 import 'package:flyerapp/Screens/HomePage/homepage.dart';
 import 'package:flyerapp/Screens/LoginScreen/login_screen.dart';
 import 'package:get/get.dart';
-
 import '../SharedPrefrence/sharedprefrence.dart';
 
 class SplashScreeen extends StatefulWidget {
+  const SplashScreeen({Key? key}) : super(key: key);
+
   @override
   State<SplashScreeen> createState() => _SplashScreeenState();
 }
