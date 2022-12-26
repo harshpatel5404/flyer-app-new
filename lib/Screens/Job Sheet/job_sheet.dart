@@ -244,7 +244,7 @@ class _JobSheetState extends State<JobSheet> {
                               width: W * 0.06,
                             ),
                             Text(
-                              "Look's like their is nothing in job sheet...",
+                              "Looks like their is nothing in job sheet...",
                               style: TextStyle(
                                   fontSize: 13,
                                   fontFamily: 'OpenSans-Bold',

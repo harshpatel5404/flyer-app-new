@@ -52,14 +52,13 @@ class _StartJobState extends State<StartJob> {
   Future getProfileData() async {
     userNameAPI = await getName();
     userEmail = await getEmail();
-    setState((){});
+    setState(() {});
     tokenAPI = await getToken();
     setState(() {
       tokenAPI;
       print(tokenAPI);
     });
-    var url =
-        "https://ondemandflyers.com:8087/distributor/profile";
+    var url = "https://ondemandflyers.com:8087/distributor/profile";
     var response = await http.get(
       Uri.parse(
         url,
@@ -74,10 +73,10 @@ class _StartJobState extends State<StartJob> {
     print("This is my Profile : $jsonData");
     nameForProfile = jsonData["data"]["full_name"];
 
-
     print(jsonData["data"]["full_name"]);
-    setState((){});
+    setState(() {});
   }
+
   Future<DataModel> getMyJobData() async {
     tokenAPI = await getToken();
     jobApiId = await getJobId();
@@ -94,8 +93,8 @@ class _StartJobState extends State<StartJob> {
     startLong = await getLongitudeStart();
     endLat = await getLatitudeEnd();
     endLong = await getLongitudeEnd();
-    _initialPosition = CameraPosition(target: LatLng(startLat!,startLong!));
-    setState((){});
+    _initialPosition = CameraPosition(target: LatLng(startLat!, startLong!));
+    setState(() {});
     print(jobTitle);
     print(numDays);
     print(jobApiId);
@@ -103,34 +102,41 @@ class _StartJobState extends State<StartJob> {
     var baseurl = "https://ondemandflyers.com:8087/distributor/myJobStatus";
     var jobId = "$jobApiId";
     var url = "$baseurl/$jobId";
-    var response = await http.get(Uri.parse(url,),
+    var response = await http.get(
+      Uri.parse(
+        url,
+      ),
       headers: {
         'x-access-token': "$tokenAPI",
-      },);
+      },
+    );
 
-    var  jsonData = jsonDecode(response.body);
-    setState((){
+    var jsonData = jsonDecode(response.body);
+    setState(() {
       print("printToken : $tokenAPI");
       Approved = jsonData['data']['isApproved'];
     });
     print(Approved);
     return jsonData;
   }
-  Future getUserData()async{
+
+  Future getUserData() async {
     userNameAPI = await getName();
     userEmail = await getEmail();
-    setState((){
+    setState(() {
       userNameAPI;
       userEmail;
     });
   }
+
   @override
-  void initState(){
+  void initState() {
     getUserData();
     getMyJobData();
     getProfileData();
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     final DateFormat formatter = DateFormat('yyyy-MM-dd');
@@ -143,135 +149,146 @@ class _StartJobState extends State<StartJob> {
         elevation: 0,
         leading: Container(
             child: InkWell(
-                onTap: (){
+                onTap: () {
                   Get.back();
                 },
-                child: Icon(Icons.arrow_back,color: Color(0xFF4D4D4D),))),
+                child: Icon(
+                  Icons.arrow_back,
+                  color: Color(0xFF4D4D4D),
+                ))),
         title: Text("Start Job"),
         titleTextStyle: TextStyle(
           fontFamily: "OpenSans-Semibold",
           fontSize: 22,
           color: Colors.black,
-
         ),
         titleSpacing: 2,
-        actions: [InkWell(
-          onTap: (){
-            Get.to(Notifications());
-          },
-          child: Padding(
-            padding:  EdgeInsets.only(right: W*0.04),
-            child: Center(
-              child: Stack(
-                children: [
-                  Icon(Icons.notifications_none_outlined,color: flyBlack2,),
-                  Padding(
-                    padding:  EdgeInsets.only(left: W*0.03,),
-                    child: CircleAvatar(
-                      backgroundColor: flyOrange2,
-                      radius: 7,
-                      child: Text("!",style: TextStyle(
-                          fontSize: 11
-                      ),),
+        actions: [
+          InkWell(
+            onTap: () {
+              Get.to(Notifications());
+            },
+            child: Padding(
+              padding: EdgeInsets.only(right: W * 0.04),
+              child: Center(
+                child: Stack(
+                  children: [
+                    Icon(
+                      Icons.notifications_none_outlined,
+                      color: flyBlack2,
                     ),
-                  )
-                ],
+                    Padding(
+                      padding: EdgeInsets.only(
+                        left: W * 0.03,
+                      ),
+                      child: CircleAvatar(
+                        backgroundColor: flyOrange2,
+                        radius: 7,
+                        child: Text(
+                          "0",
+                          style: TextStyle(fontSize: 11),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
-          ),
-        )],
+          )
+        ],
       ),
       body: Center(
-        child:Column(
+        child: Column(
           children: [
             Container(
-              height: H*0.45,
+              height: H * 0.45,
               child: Stack(
                 children: [
                   Align(
-                    alignment: Alignment.topCenter
-                    ,child: Container(
-                    height: H*0.2,
-                    width: W*0.9,
-                    decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                            colors: [flyMargenta,flyOrange2],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight
+                    alignment: Alignment.topCenter,
+                    child: Container(
+                      height: H * 0.2,
+                      width: W * 0.9,
+                      decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                              colors: [flyMargenta, flyOrange2],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight),
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
+                      child: Padding(
+                        padding: EdgeInsets.only(left: W * 0.05, top: H * 0.02),
+                        child: Row(
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "CORPORATE",
+                                  style: TextStyle(
+                                      fontFamily: "Gothic-Regular",
+                                      color: Colors.white,
+                                      fontSize: 23),
+                                ),
+                                Text(
+                                  "FLYER",
+                                  style: TextStyle(
+                                      fontFamily: "Gothic-Bold",
+                                      color: Colors.white,
+                                      fontSize: 45),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              width: W * 0.02,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  width: W * 0.4,
+                                  child: Text(
+                                    "$nameForProfile",
+                                    style: TextStyle(
+                                        overflow: TextOverflow.ellipsis,
+                                        fontFamily: "Gothic-Regular",
+                                        color: Colors.white,
+                                        fontSize: 20),
+                                  ),
+                                ),
+                                Container(
+                                  width: W * 0.42,
+                                  child: Text(
+                                    "$userEmail",
+                                    style: TextStyle(
+                                        fontFamily: "Gothic-Regular",
+                                        overflow: TextOverflow.ellipsis,
+                                        color: Colors.white,
+                                        fontSize: 10),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
-                        borderRadius: BorderRadius.all(Radius.circular(10))
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.only(left: W*0.05,top: H*0.02),
-                      child: Row(
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("CORPORATE",
-                                style: TextStyle(
-                                    fontFamily: "Gothic-Regular",
-                                    color: Colors.white,
-                                    fontSize: 23
-                                ),
-                              ),
-                              Text("FLYER",
-                                style: TextStyle(
-                                    fontFamily: "Gothic-Bold",
-                                    color: Colors.white,
-                                    fontSize: 45
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(width: W*0.02,),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                width: W*0.4,
-                                child: Text("$nameForProfile",
-                                  style: TextStyle(
-                                      overflow: TextOverflow.ellipsis,
-                                      fontFamily: "Gothic-Regular",
-                                      color: Colors.white,
-                                      fontSize: 20
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                width: W*0.42,
-                                child: Text("$userEmail",
-                                  style: TextStyle(
-                                      fontFamily: "Gothic-Regular",
-                                      overflow: TextOverflow.ellipsis,
-                                      color: Colors.white,
-                                      fontSize: 10
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
                       ),
                     ),
-                  ),
                   ),
                   Align(
                     alignment: Alignment.center,
                     child: Padding(
-                      padding:  EdgeInsets.only(top: H*0.1),
+                      padding: EdgeInsets.only(top: H * 0.1),
                       child: Container(
-                        width: W*0.8,
+                        width: W * 0.8,
                         decoration: BoxDecoration(
-                            boxShadow: [BoxShadow(
-                                offset: Offset.zero,
-                                color:flyGray4,
-                                blurRadius: 10
-                            )],
+                            boxShadow: [
+                              BoxShadow(
+                                  offset: Offset.zero,
+                                  color: flyGray4,
+                                  blurRadius: 10)
+                            ],
                             color: Colors.white,
-                            borderRadius: BorderRadius.all(Radius.circular(10))
-                        ),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10))),
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Column(
@@ -279,123 +296,129 @@ class _StartJobState extends State<StartJob> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Container(
-                                width: W*0.7,
-                                child: Text("$jobTitle",
+                                width: W * 0.7,
+                                child: Text(
+                                  "$jobTitle",
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                       fontFamily: 'OpenSans-Bold',
-                                      fontSize: 14
-                                  ),
+                                      fontSize: 14),
                                 ),
                               ),
-                              SizedBox(height: H*0.01,),
+                              SizedBox(
+                                height: H * 0.01,
+                              ),
                               Row(
                                 children: [
-                                  Text("Job Post Date:",
+                                  Text(
+                                    "Job Post Date:",
                                     style: TextStyle(
                                         fontFamily: 'OpenSans-Regular',
                                         fontSize: 16,
-                                        color: Color(0xFF808080)
-                                    ),
+                                        color: Color(0xFF808080)),
                                   ),
-                                  Text(formatter.parse("$startDate").toString(),
+                                  Text(
+                                    formatter.parse("$startDate").toString(),
                                     style: TextStyle(
                                         fontFamily: 'OpenSans-Regular',
                                         fontSize: 14,
-                                        color: Color(0xFF333333)
-                                    ),
+                                        color: Color(0xFF333333)),
                                   ),
                                 ],
                               ),
                               Row(
                                 children: [
-                                  Text("Completed By:",
+                                  Text(
+                                    "Completed By:",
                                     style: TextStyle(
                                         fontFamily: 'OpenSans-Regular',
                                         fontSize: 16,
-                                        color: Color(0xFF808080)
-                                    ),
+                                        color: Color(0xFF808080)),
                                   ),
-                                  Text(formatter.parse("$endDate").toString(),
+                                  Text(
+                                    formatter.parse("$endDate").toString(),
                                     style: TextStyle(
                                         fontFamily: 'OpenSans-Regular',
                                         fontSize: 14,
-                                        color: Color(0xFF333333)
-                                    ),
+                                        color: Color(0xFF333333)),
                                   ),
                                 ],
                               ),
-                              SizedBox(height: H*0.03,),
-                              Row(
-                                children: [
-                                  Text("Number of Flyers:",
-                                    style: TextStyle(
-                                        fontFamily: 'OpenSans-Regular',
-                                        fontSize: 15,
-                                        color: Color(0xFF808080)
-                                    ),
-                                  ),
-                                  Text(" $flyer",
-                                    style: TextStyle(
-                                        fontFamily: 'OpenSans-Regular',
-                                        fontSize: 15,
-                                        color: Color(0xFF333333)
-                                    ),
-                                  ),
-                                ],
+                              SizedBox(
+                                height: H * 0.03,
                               ),
                               Row(
                                 children: [
-                                  Text("Number of Doorhangers:",
+                                  Text(
+                                    "Number of Flyers:",
                                     style: TextStyle(
                                         fontFamily: 'OpenSans-Regular',
                                         fontSize: 15,
-                                        color: Color(0xFF808080)
-                                    ),
+                                        color: Color(0xFF808080)),
                                   ),
-                                  Text(" $doorHanger",
+                                  Text(
+                                    " $flyer",
                                     style: TextStyle(
                                         fontFamily: 'OpenSans-Regular',
                                         fontSize: 15,
-                                        color: Color(0xFF333333)
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: H*0.03,),
-                              Row(
-                                children: [
-                                  Text("Hourly rate:",
-                                    style: TextStyle(
-                                        fontFamily: 'OpenSans-Regular',
-                                        fontSize: 15,
-                                        color: Color(0xFF808080)
-                                    ),
-                                  ),
-                                  Text(" $hourlyRate",
-                                    style: TextStyle(
-                                        fontFamily: 'OpenSans-Regular',
-                                        fontSize: 15,
-                                        color: Color(0xFF333333)
-                                    ),
+                                        color: Color(0xFF333333)),
                                   ),
                                 ],
                               ),
                               Row(
                                 children: [
-                                  Text("Total Number Of Days:",
+                                  Text(
+                                    "Number of Doorhangers:",
                                     style: TextStyle(
                                         fontFamily: 'OpenSans-Regular',
                                         fontSize: 15,
-                                        color: Color(0xFF808080)
-                                    ),
+                                        color: Color(0xFF808080)),
                                   ),
-                                  Text(" $numDays",
+                                  Text(
+                                    " $doorHanger",
                                     style: TextStyle(
                                         fontFamily: 'OpenSans-Regular',
                                         fontSize: 15,
-                                        color: Color(0xFF333333)
-                                    ),
+                                        color: Color(0xFF333333)),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: H * 0.03,
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    "Hourly rate: (USD)",
+                                    style: TextStyle(
+                                        fontFamily: 'OpenSans-Regular',
+                                        fontSize: 15,
+                                        color: Color(0xFF808080)),
+                                  ),
+                                  Text(
+                                    " $hourlyRate",
+                                    style: TextStyle(
+                                        fontFamily: 'OpenSans-Regular',
+                                        fontSize: 15,
+                                        color: Color(0xFF333333)),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    "Total Number Of Days:",
+                                    style: TextStyle(
+                                        fontFamily: 'OpenSans-Regular',
+                                        fontSize: 15,
+                                        color: Color(0xFF808080)),
+                                  ),
+                                  Text(
+                                    " $numDays",
+                                    style: TextStyle(
+                                        fontFamily: 'OpenSans-Regular',
+                                        fontSize: 15,
+                                        color: Color(0xFF333333)),
                                   ),
                                 ],
                               ),
@@ -408,25 +431,23 @@ class _StartJobState extends State<StartJob> {
                 ],
               ),
             ),
-            Text("Job Location",
+            Text(
+              "Job Location",
               style: TextStyle(
-                  color: flyBlue1,
-                  fontFamily: "Opensans-Bold",
-                  fontSize: 15
-              ),
+                  color: flyBlue1, fontFamily: "Opensans-Bold", fontSize: 15),
             ),
-            SizedBox(height: H*0.01,),
+            SizedBox(
+              height: H * 0.01,
+            ),
             Container(
-              width: W*0.9,
+              width: W * 0.9,
               decoration: BoxDecoration(
-                  boxShadow: [BoxShadow(
-                      offset: Offset(1,1),
-                      color:flyGray4,
-                      blurRadius: 20
-                  )],
+                  boxShadow: [
+                    BoxShadow(
+                        offset: Offset(1, 1), color: flyGray4, blurRadius: 20)
+                  ],
                   color: Colors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(12))
-              ),
+                  borderRadius: BorderRadius.all(Radius.circular(12))),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
@@ -440,31 +461,31 @@ class _StartJobState extends State<StartJob> {
                           child: CircleAvatar(
                             radius: 19,
                             foregroundColor: Colors.black,
-                            backgroundColor: Colors.white
-                            ,child: Container(
-                            decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: AssetImage("assets/images/from_tracking.png"),
-                                )
+                            backgroundColor: Colors.white,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                image: AssetImage(
+                                    "assets/images/from_tracking.png"),
+                              )),
                             ),
-                          ),
                           ),
                         ),
                         Container(
-                          width: W*0.7,
-                          child: Text("  $startLocation",
+                          width: W * 0.7,
+                          child: Text(
+                            "  $startLocation",
                             style: TextStyle(
                                 overflow: TextOverflow.ellipsis,
                                 color: Color(0xFF333333),
                                 fontFamily: "Opensans-Regular",
-                                fontSize: 14
-                            ),
+                                fontSize: 14),
                           ),
                         ),
                       ],
                     ),
                     Padding(
-                      padding:  EdgeInsets.only(left: W*0.05),
+                      padding: EdgeInsets.only(left: W * 0.05),
                       child: Image.asset("assets/images/tracking_line.png"),
                     ),
                     Row(
@@ -475,25 +496,24 @@ class _StartJobState extends State<StartJob> {
                           child: CircleAvatar(
                             radius: 19,
                             foregroundColor: Colors.black,
-                            backgroundColor: Colors.white
-                            ,child: Container(
-                            decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: AssetImage("assets/images/map2.png"),
-                                )
+                            backgroundColor: Colors.white,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                image: AssetImage("assets/images/map2.png"),
+                              )),
                             ),
-                          ),
                           ),
                         ),
                         Container(
-                          width: W*0.7,
-                          child: Text("  $endLocation",
+                          width: W * 0.7,
+                          child: Text(
+                            "  $endLocation",
                             style: TextStyle(
                                 overflow: TextOverflow.ellipsis,
                                 color: Color(0xFF333333),
                                 fontFamily: "Opensans-Regular",
-                                fontSize: 13
-                            ),
+                                fontSize: 13),
                           ),
                         ),
                       ],
@@ -502,100 +522,111 @@ class _StartJobState extends State<StartJob> {
                 ),
               ),
             ),
-            SizedBox(height: H*0.04,),
+            SizedBox(
+              height: H * 0.04,
+            ),
             InkWell(
-              onTap: ()async{
+              onTap: () async {
                 bool serviceEnabled;
                 LocationPermission permission;
                 serviceEnabled = await Geolocator.isLocationServiceEnabled();
-                if(!serviceEnabled){
-                  return  Get.defaultDialog(
+                if (!serviceEnabled) {
+                  return Get.defaultDialog(
                       title: "",
                       titleStyle: TextStyle(
                           fontSize: 15,
                           fontFamily: 'OpenSans-Bold',
-                          color: flyBlack2
-                      ),
+                          color: flyBlack2),
                       content: Column(
                         children: [
-                          Text("Please turn on your device location!",style:TextStyle(
-                              fontSize: 13,
-                              fontFamily: 'OpenSans-Bold',
-                              color: flyBlack2
-                          ),),
-                          SizedBox(height: H*0.02,),
+                          Text(
+                            "Please turn on your device location!",
+                            style: TextStyle(
+                                fontSize: 13,
+                                fontFamily: 'OpenSans-Bold',
+                                color: flyBlack2),
+                          ),
+                          SizedBox(
+                            height: H * 0.02,
+                          ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               InkWell(
-                                onTap: (){
+                                onTap: () {
                                   Get.back();
                                 },
                                 child: Container(
-                                    height: H*0.05,
-                                    width: W*0.2,
+                                    height: H * 0.05,
+                                    width: W * 0.2,
                                     decoration: BoxDecoration(
                                         color: flyOrange2,
-                                        borderRadius: BorderRadius.all(Radius.circular(8))
-                                    ),
-                                    child: Center(child: Text("Ok",style: TextStyle(fontSize: 13,
-                                        fontFamily: 'OpenSans-Bold',
-                                        color: Colors.white),))
-                                ),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(8))),
+                                    child: Center(
+                                        child: Text(
+                                      "Ok",
+                                      style: TextStyle(
+                                          fontSize: 13,
+                                          fontFamily: 'OpenSans-Bold',
+                                          color: Colors.white),
+                                    ))),
                               ),
-                              SizedBox(width: W*0.05,),
+                              SizedBox(
+                                width: W * 0.05,
+                              ),
                               InkWell(
-                                onTap: (){
+                                onTap: () {
                                   Get.back();
                                 },
                                 child: Container(
-                                    height: H*0.05,
-                                    width: W*0.2,
+                                    height: H * 0.05,
+                                    width: W * 0.2,
                                     decoration: BoxDecoration(
                                         color: flyGray3,
-                                        borderRadius: BorderRadius.all(Radius.circular(8))
-                                    ),
-                                    child: Center(child: Text("cancel",style: TextStyle(fontSize: 13,
-                                        fontFamily: 'OpenSans-Bold',
-                                        color: Colors.white),))
-                                ),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(8))),
+                                    child: Center(
+                                        child: Text(
+                                      "cancel",
+                                      style: TextStyle(
+                                          fontSize: 13,
+                                          fontFamily: 'OpenSans-Bold',
+                                          color: Colors.white),
+                                    ))),
                               ),
                             ],
                           )
                         ],
-                      )
-                  );
+                      ));
                 }
                 permission = await Geolocator.checkPermission();
-                if(permission == LocationPermission.denied){
+                if (permission == LocationPermission.denied) {
                   permission = await Geolocator.requestPermission();
                   Get.to(JobTracking());
                   startJob();
-                }else if(permission == LocationPermission.whileInUse){
+                } else if (permission == LocationPermission.whileInUse) {
                   Get.to(JobTracking());
                   startJob();
                 }
               },
               child: Container(
-                width: W*0.9,
-                height: H*0.08,
+                width: W * 0.9,
+                height: H * 0.08,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(5)),
                     gradient: LinearGradient(
-                        colors: [flyOrange1,flyOrange2],
+                        colors: [flyOrange1, flyOrange2],
                         begin: Alignment.bottomLeft,
-                        end:  Alignment.topRight
-                    )
-                ),
-                child: Center(child:
-                Text("Start Job",
+                        end: Alignment.topRight)),
+                child: Center(
+                    child: Text(
+                  "Start Job",
                   style: TextStyle(
                       fontFamily: "Opensans-Bold",
                       fontSize: 16,
-                      color: Colors.white
-                  ),
-                )
-                ),
+                      color: Colors.white),
+                )),
               ),
             ),
           ],
@@ -603,6 +634,7 @@ class _StartJobState extends State<StartJob> {
       ),
     );
   }
+
   Future startJob() async {
     jobId = await getJobId();
     var userName = await getName();
@@ -612,12 +644,11 @@ class _StartJobState extends State<StartJob> {
     print("This is my jobId : $jobId");
     var token = tokenAPI;
     var baseurl = "https://ondemandflyers.com:8087";
-    final response = await http.patch(
-        Uri.parse("$baseurl/distributor/startJob/$jobId"),
-        headers: {
-          'x-access-token': "$token",
-          "Content-Type": "application/json",
-        });
+    final response = await http
+        .patch(Uri.parse("$baseurl/distributor/startJob/$jobId"), headers: {
+      'x-access-token': "$token",
+      "Content-Type": "application/json",
+    });
     print(response.body);
     functionForSocket({
       'type': 'Start Job',

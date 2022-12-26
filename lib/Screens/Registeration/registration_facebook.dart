@@ -11,6 +11,7 @@ import 'package:flyerapp/Screens/Api/all_api.dart';
 import 'package:flyerapp/Screens/LoginScreen/login_screen.dart';
 import 'package:flyerapp/Screens/Terms%20&%20Condition/terms_and_condition.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:mime/mime.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -36,13 +37,12 @@ class FacebookRegistration extends StatefulWidget {
 }
 
 class _FacebookRegistrationState extends State<FacebookRegistration> {
-
   String? name;
   String? email;
-  Future getUserData()async{
+  Future getUserData() async {
     name = await getFacebookName();
     email = await getFacebookEmail();
-    setState((){
+    setState(() {
       print(name);
       print(email);
     });
@@ -54,26 +54,32 @@ class _FacebookRegistrationState extends State<FacebookRegistration> {
     getMyJobData();
     getUserData();
   }
+
   List _dropDownList = [];
   bool _loading = false;
-  void getMyJobData()async{
-    var url = "https://ondemandflyers.com:8087/distributor/applicableDocumentList";
-    var response = await http.get(Uri.parse(url,),
-
+  void getMyJobData() async {
+    var url =
+        "https://ondemandflyers.com:8087/distributor/applicableDocumentList";
+    var response = await http.get(
+      Uri.parse(
+        url,
+      ),
       headers: {
         // 'x-access-token': "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyZDhmNmEwOTQ4MzhiNjc5MDZiN2VmOCIsImlhdCI6MTY1ODQ3MTc2NiwiZXhwIjoxNjY4ODM5NzY2fQ.3tWNWqu9CQCAFMAlFJHsVQhAaMllwUugDY7xLaR7R-I",
         "content-type": "application/json",
-      },);
+      },
+    );
     // JobModel jobModel = JobModel.fromJson(jsonDecode(response.body) as Map<String, dynamic>);
     // print(jobModel.jobTitle);
     var jsonData = jsonDecode(response.body);
     print(response.body);
-    setState((){
+    setState(() {
       _dropDownList = jsonData['data'];
       print(_dropDownList[0]['label']);
     });
     print(jsonData);
   }
+
   TextEditingController emailController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController fullNameController = TextEditingController();
@@ -160,9 +166,9 @@ class _FacebookRegistrationState extends State<FacebookRegistration> {
                                 padding: EdgeInsets.only(
                                     left: H * 0.01, bottom: H * 0.009),
                                 child: InkWell(
-                                  onTap: () async{
+                                  onTap: () async {
                                     var status = await Permission.camera.status;
-                                    if(status.isDenied){
+                                    if (status.isDenied) {
                                       Get.defaultDialog(
                                           title: "",
                                           titleStyle: TextStyle(
@@ -183,7 +189,7 @@ class _FacebookRegistrationState extends State<FacebookRegistration> {
                                               ),
                                               Row(
                                                 mainAxisAlignment:
-                                                MainAxisAlignment.center,
+                                                    MainAxisAlignment.center,
                                                 children: [
                                                   InkWell(
                                                     onTap: () {
@@ -195,18 +201,20 @@ class _FacebookRegistrationState extends State<FacebookRegistration> {
                                                         decoration: BoxDecoration(
                                                             color: flyOrange2,
                                                             borderRadius:
-                                                            BorderRadius.all(
-                                                                Radius.circular(
-                                                                    8))),
+                                                                BorderRadius
+                                                                    .all(Radius
+                                                                        .circular(
+                                                                            8))),
                                                         child: Center(
                                                             child: Text(
-                                                              "Ok",
-                                                              style: TextStyle(
-                                                                  fontSize: 13,
-                                                                  fontFamily:
+                                                          "Ok",
+                                                          style: TextStyle(
+                                                              fontSize: 13,
+                                                              fontFamily:
                                                                   'OpenSans-Bold',
-                                                                  color: Colors.white),
-                                                            ))),
+                                                              color:
+                                                                  Colors.white),
+                                                        ))),
                                                   ),
                                                 ],
                                               )
@@ -270,8 +278,7 @@ class _FacebookRegistrationState extends State<FacebookRegistration> {
                         backgroundColor: Colors.white,
                         backgroundImage: image != null
                             ? FileImage(image!) as ImageProvider
-                            : AssetImage(
-                            "assets/images/Profile_pic.png"),
+                            : AssetImage("assets/images/Profile_pic.png"),
                       ),
                     ),
                   ),
@@ -304,30 +311,60 @@ class _FacebookRegistrationState extends State<FacebookRegistration> {
                   SizedBox(
                     height: H * 0.04,
                   ),
+                  // Container(
+                  //     width: W * 0.85,
+                  //     height: H * 0.08,
+                  //     decoration: BoxDecoration(
+                  //         border: Border.all(
+                  //             color: Colors.transparent, width: 0.5)),
+                  //     child: Center(
+                  //       child: TextFormField(
+                  //         controller: phoneController,
+                  //         keyboardType: TextInputType.number,
+                  //         decoration: InputDecoration(
+                  //             filled: true,
+                  //             fillColor: Colors.white,
+                  //             label: Text("Phone Number"),
+                  //             labelStyle: TextStyle(
+                  //                 fontSize: 15,
+                  //                 fontFamily: 'OpenSans-Regular',
+                  //                 color: flyGray3),
+                  //             focusedBorder: OutlineInputBorder(
+                  //                 borderSide: BorderSide(color: Colors.black)),
+                  //             enabledBorder: OutlineInputBorder(
+                  //                 borderSide: BorderSide(color: flyGray4))),
+                  //       ),
+                  //     )),
                   Container(
-                      width: W * 0.85,
-                      height: H * 0.08,
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                              color: Colors.transparent, width: 0.5)),
-                      child: Center(
-                        child: TextFormField(
-                          controller: phoneController,
-                          keyboardType: TextInputType.number,
-                          decoration: InputDecoration(
-                              filled: true,
-                              fillColor: Colors.white,
-                              label: Text("Phone Number"),
-                              labelStyle: TextStyle(
-                                  fontSize: 15,
-                                  fontFamily: 'OpenSans-Regular',
-                                  color: flyGray3),
-                              focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.black)),
-                              enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: flyGray4))),
-                        ),
-                      )),
+                    width: W * 0.85,
+                    decoration: BoxDecoration(
+                        border:
+                            Border.all(color: Colors.transparent, width: 0.5)),
+                    child: Center(
+                      child: IntlPhoneField(
+                        controller: phoneController,
+                        style: TextStyle(fontSize: 16),
+                        decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white,
+                            label: Text("Phone Number"),
+                            labelStyle: TextStyle(
+                                fontSize: 15,
+                                fontFamily: 'OpenSans-Regular',
+                                color: flyGray3),
+                            border: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.black)),
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.black)),
+                            enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: flyGray4))),
+                        initialCountryCode: 'IN',
+                        onChanged: (phone) {
+                          print(phone.number);
+                        },
+                      ),
+                    ),
+                  ),
                   SizedBox(
                     height: H * 0.04,
                   ),
@@ -377,13 +414,13 @@ class _FacebookRegistrationState extends State<FacebookRegistration> {
                                   },
                                   child: hidePassword1
                                       ? Icon(
-                                    Icons.visibility_outlined,
-                                    color: flyGray3,
-                                  )
+                                          Icons.visibility_outlined,
+                                          color: flyGray3,
+                                        )
                                       : Icon(
-                                    Icons.visibility_off,
-                                    color: flyGray3,
-                                  )),
+                                          Icons.visibility_off,
+                                          color: flyGray3,
+                                        )),
                               filled: true,
                               fillColor: Colors.white,
                               label: Text("Password"),
@@ -419,13 +456,13 @@ class _FacebookRegistrationState extends State<FacebookRegistration> {
                                   },
                                   child: hidePassword2
                                       ? Icon(
-                                    Icons.visibility_outlined,
-                                    color: flyGray3,
-                                  )
+                                          Icons.visibility_outlined,
+                                          color: flyGray3,
+                                        )
                                       : Icon(
-                                    Icons.visibility_off,
-                                    color: flyGray3,
-                                  )),
+                                          Icons.visibility_off,
+                                          color: flyGray3,
+                                        )),
                               filled: true,
                               fillColor: Colors.white,
                               label: Text("Confirm Password"),
@@ -446,9 +483,8 @@ class _FacebookRegistrationState extends State<FacebookRegistration> {
                     child: Container(
                       width: W * 0.85,
                       height: H * 0.08,
-                      decoration: BoxDecoration(
-                          border: Border.all(color: flyGray2)
-                      ),
+                      decoration:
+                          BoxDecoration(border: Border.all(color: flyGray2)),
                       child: DropdownButtonHideUnderline(
                         child: ButtonTheme(
                           alignedDropdown: true,
@@ -460,10 +496,13 @@ class _FacebookRegistrationState extends State<FacebookRegistration> {
                                 fontSize: 15,
                                 fontFamily: 'OpenSans-Regular',
                                 color: flyBlack2),
-                            hint: Text('Select Document Type',style: TextStyle(
-                                fontSize: 15,
-                                fontFamily: 'OpenSans-Regular',
-                                color: flyBlack2),),
+                            hint: Text(
+                              'Select Document Type',
+                              style: TextStyle(
+                                  fontSize: 15,
+                                  fontFamily: 'OpenSans-Regular',
+                                  color: flyBlack2),
+                            ),
                             onChanged: (String? newValue) {
                               setState(() {
                                 _myState = newValue;
@@ -509,9 +548,10 @@ class _FacebookRegistrationState extends State<FacebookRegistration> {
                                   padding: EdgeInsets.only(
                                       left: H * 0.01, bottom: H * 0.009),
                                   child: InkWell(
-                                    onTap: () async{
-                                      var status = await Permission.camera.status;
-                                      if(status.isDenied){
+                                    onTap: () async {
+                                      var status =
+                                          await Permission.camera.status;
+                                      if (status.isDenied) {
                                         Get.defaultDialog(
                                             title: "",
                                             titleStyle: TextStyle(
@@ -524,7 +564,8 @@ class _FacebookRegistrationState extends State<FacebookRegistration> {
                                                   "Go to settings for allow the camera permission.",
                                                   style: TextStyle(
                                                       fontSize: 13,
-                                                      fontFamily: 'OpenSans-Bold',
+                                                      fontFamily:
+                                                          'OpenSans-Bold',
                                                       color: flyBlack2),
                                                 ),
                                                 SizedBox(
@@ -532,7 +573,7 @@ class _FacebookRegistrationState extends State<FacebookRegistration> {
                                                 ),
                                                 Row(
                                                   mainAxisAlignment:
-                                                  MainAxisAlignment.center,
+                                                      MainAxisAlignment.center,
                                                   children: [
                                                     InkWell(
                                                       onTap: () {
@@ -543,19 +584,20 @@ class _FacebookRegistrationState extends State<FacebookRegistration> {
                                                           width: W * 0.2,
                                                           decoration: BoxDecoration(
                                                               color: flyOrange2,
-                                                              borderRadius:
-                                                              BorderRadius.all(
-                                                                  Radius.circular(
-                                                                      8))),
+                                                              borderRadius: BorderRadius
+                                                                  .all(Radius
+                                                                      .circular(
+                                                                          8))),
                                                           child: Center(
                                                               child: Text(
-                                                                "Ok",
-                                                                style: TextStyle(
-                                                                    fontSize: 13,
-                                                                    fontFamily:
+                                                            "Ok",
+                                                            style: TextStyle(
+                                                                fontSize: 13,
+                                                                fontFamily:
                                                                     'OpenSans-Bold',
-                                                                    color: Colors.white),
-                                                              ))),
+                                                                color: Colors
+                                                                    .white),
+                                                          ))),
                                                     ),
                                                   ],
                                                 )
@@ -612,13 +654,14 @@ class _FacebookRegistrationState extends State<FacebookRegistration> {
                       },
                       child: Center(
                         child: file1 == null
-                            ? buildDottedBorderRegister(H, W,"  Upload Front Side")
+                            ? buildDottedBorderRegister(
+                                H, W, "  Upload Front Side")
                             : buildUploadNoDotted1(H),
                       ),
                     ),
                   ),
                   SizedBox(
-                    height: H*0.02,
+                    height: H * 0.02,
                   ),
                   Container(
                     height: H * 0.14,
@@ -644,9 +687,10 @@ class _FacebookRegistrationState extends State<FacebookRegistration> {
                                   padding: EdgeInsets.only(
                                       left: H * 0.01, bottom: H * 0.009),
                                   child: InkWell(
-                                    onTap: () async{
-                                      var status = await Permission.camera.status;
-                                      if(status.isDenied){
+                                    onTap: () async {
+                                      var status =
+                                          await Permission.camera.status;
+                                      if (status.isDenied) {
                                         Get.defaultDialog(
                                             title: "",
                                             titleStyle: TextStyle(
@@ -659,7 +703,8 @@ class _FacebookRegistrationState extends State<FacebookRegistration> {
                                                   "Go to settings for allow the camera permission.",
                                                   style: TextStyle(
                                                       fontSize: 13,
-                                                      fontFamily: 'OpenSans-Bold',
+                                                      fontFamily:
+                                                          'OpenSans-Bold',
                                                       color: flyBlack2),
                                                 ),
                                                 SizedBox(
@@ -667,7 +712,7 @@ class _FacebookRegistrationState extends State<FacebookRegistration> {
                                                 ),
                                                 Row(
                                                   mainAxisAlignment:
-                                                  MainAxisAlignment.center,
+                                                      MainAxisAlignment.center,
                                                   children: [
                                                     InkWell(
                                                       onTap: () {
@@ -678,19 +723,20 @@ class _FacebookRegistrationState extends State<FacebookRegistration> {
                                                           width: W * 0.2,
                                                           decoration: BoxDecoration(
                                                               color: flyOrange2,
-                                                              borderRadius:
-                                                              BorderRadius.all(
-                                                                  Radius.circular(
-                                                                      8))),
+                                                              borderRadius: BorderRadius
+                                                                  .all(Radius
+                                                                      .circular(
+                                                                          8))),
                                                           child: Center(
                                                               child: Text(
-                                                                "Ok",
-                                                                style: TextStyle(
-                                                                    fontSize: 13,
-                                                                    fontFamily:
+                                                            "Ok",
+                                                            style: TextStyle(
+                                                                fontSize: 13,
+                                                                fontFamily:
                                                                     'OpenSans-Bold',
-                                                                    color: Colors.white),
-                                                              ))),
+                                                                color: Colors
+                                                                    .white),
+                                                          ))),
                                                     ),
                                                   ],
                                                 )
@@ -747,7 +793,8 @@ class _FacebookRegistrationState extends State<FacebookRegistration> {
                       },
                       child: Center(
                         child: file2 == null
-                            ? buildDottedBorderRegister(H, W,"  Upload Back Side")
+                            ? buildDottedBorderRegister(
+                                H, W, "  Upload Back Side")
                             : buildUploadNoDotted2(H),
                       ),
                     ),
@@ -780,7 +827,7 @@ class _FacebookRegistrationState extends State<FacebookRegistration> {
                               color: flyBlack),
                         ),
                         InkWell(
-                          onTap: (){
+                          onTap: () {
                             Get.to(TermsAndConditionCustomer());
                           },
                           child: Text(
@@ -803,754 +850,750 @@ class _FacebookRegistrationState extends State<FacebookRegistration> {
                     height: H * 0.02,
                   ),
                   checkBox == true
-                      ?   InkWell(
-                    onTap: () async {
-                      if (fullNameController.text.isEmpty &&
-                          phoneController.text.isEmpty &&
-                          emailController.text.isEmpty &&
-                          passwordController.text.isEmpty &&
-                          confirmPasswordController.text.isEmpty &&
-                          image == null &&
-                          file == null) {
-                        Get.defaultDialog(
-                            title: "Error found",
-                            titleStyle: TextStyle(
-                                fontSize: 15,
-                                fontFamily: 'OpenSans-Bold',
-                                color: flyBlack2),
-                            content: Column(
-                              children: [
-                                Text(
-                                  "Please fill the details!",
-                                  style: TextStyle(
-                                      fontSize: 13,
+                      ? InkWell(
+                          onTap: () async {
+                            if (fullNameController.text.isEmpty &&
+                                phoneController.text.isEmpty &&
+                                emailController.text.isEmpty &&
+                                passwordController.text.isEmpty &&
+                                confirmPasswordController.text.isEmpty &&
+                                image == null &&
+                                file == null) {
+                              Get.defaultDialog(
+                                  title: "Error found",
+                                  titleStyle: TextStyle(
+                                      fontSize: 15,
                                       fontFamily: 'OpenSans-Bold',
                                       color: flyBlack2),
-                                ),
-                                SizedBox(
-                                  height: H * 0.02,
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.center,
-                                  children: [
-                                    InkWell(
-                                      onTap: () {
-                                        Get.back();
-                                      },
-                                      child: Container(
-                                          height: H * 0.05,
-                                          width: W * 0.2,
-                                          decoration: BoxDecoration(
-                                              color: flyOrange2,
-                                              borderRadius:
-                                              BorderRadius.all(
-                                                  Radius.circular(
-                                                      8))),
-                                          child: Center(
-                                              child: Text(
-                                                "Ok",
-                                                style: TextStyle(
-                                                    fontSize: 13,
-                                                    fontFamily:
-                                                    'OpenSans-Bold',
-                                                    color: Colors.white),
-                                              ))),
-                                    ),
-                                    SizedBox(
-                                      width: W * 0.05,
-                                    ),
-                                    InkWell(
-                                      onTap: () {
-                                        Get.back();
-                                      },
-                                      child: Container(
-                                          height: H * 0.05,
-                                          width: W * 0.2,
-                                          decoration: BoxDecoration(
-                                              color: flyGray3,
-                                              borderRadius:
-                                              BorderRadius.all(
-                                                  Radius.circular(
-                                                      8))),
-                                          child: Center(
-                                              child: Text(
-                                                "cancel",
-                                                style: TextStyle(
-                                                    fontSize: 13,
-                                                    fontFamily:
-                                                    'OpenSans-Bold',
-                                                    color: Colors.white),
-                                              ))),
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ));
-                      } else if (fullNameController.text.length < 3) {
-                        Get.defaultDialog(
-                            title: "Error found",
-                            titleStyle: TextStyle(
-                                fontSize: 15,
-                                fontFamily: 'OpenSans-Bold',
-                                color: flyBlack2),
-                            content: Column(
-                              children: [
-                                Text(
-                                  "Name must be at least 3 characters",
-                                  style: TextStyle(
-                                      fontSize: 13,
+                                  content: Column(
+                                    children: [
+                                      Text(
+                                        "Please fill the details!",
+                                        style: TextStyle(
+                                            fontSize: 13,
+                                            fontFamily: 'OpenSans-Bold',
+                                            color: flyBlack2),
+                                      ),
+                                      SizedBox(
+                                        height: H * 0.02,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          InkWell(
+                                            onTap: () {
+                                              Get.back();
+                                            },
+                                            child: Container(
+                                                height: H * 0.05,
+                                                width: W * 0.2,
+                                                decoration: BoxDecoration(
+                                                    color: flyOrange2,
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                8))),
+                                                child: Center(
+                                                    child: Text(
+                                                  "Ok",
+                                                  style: TextStyle(
+                                                      fontSize: 13,
+                                                      fontFamily:
+                                                          'OpenSans-Bold',
+                                                      color: Colors.white),
+                                                ))),
+                                          ),
+                                          SizedBox(
+                                            width: W * 0.05,
+                                          ),
+                                          InkWell(
+                                            onTap: () {
+                                              Get.back();
+                                            },
+                                            child: Container(
+                                                height: H * 0.05,
+                                                width: W * 0.2,
+                                                decoration: BoxDecoration(
+                                                    color: flyGray3,
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                8))),
+                                                child: Center(
+                                                    child: Text(
+                                                  "cancel",
+                                                  style: TextStyle(
+                                                      fontSize: 13,
+                                                      fontFamily:
+                                                          'OpenSans-Bold',
+                                                      color: Colors.white),
+                                                ))),
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ));
+                            } else if (fullNameController.text.length < 3) {
+                              Get.defaultDialog(
+                                  title: "Error found",
+                                  titleStyle: TextStyle(
+                                      fontSize: 15,
                                       fontFamily: 'OpenSans-Bold',
                                       color: flyBlack2),
-                                ),
-                                SizedBox(
-                                  height: H * 0.02,
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.center,
-                                  children: [
-                                    InkWell(
-                                      onTap: () {
-                                        Get.back();
-                                      },
-                                      child: Container(
-                                          height: H * 0.05,
-                                          width: W * 0.2,
-                                          decoration: BoxDecoration(
-                                              color: flyOrange2,
-                                              borderRadius:
-                                              BorderRadius.all(
-                                                  Radius.circular(
-                                                      8))),
-                                          child: Center(
-                                              child: Text(
-                                                "Ok",
-                                                style: TextStyle(
-                                                    fontSize: 13,
-                                                    fontFamily:
-                                                    'OpenSans-Bold',
-                                                    color: Colors.white),
-                                              ))),
-                                    ),
-                                    SizedBox(
-                                      width: W * 0.05,
-                                    ),
-                                    InkWell(
-                                      onTap: () {
-                                        Get.back();
-                                      },
-                                      child: Container(
-                                          height: H * 0.05,
-                                          width: W * 0.2,
-                                          decoration: BoxDecoration(
-                                              color: flyGray3,
-                                              borderRadius:
-                                              BorderRadius.all(
-                                                  Radius.circular(
-                                                      8))),
-                                          child: Center(
-                                              child: Text(
-                                                "cancel",
-                                                style: TextStyle(
-                                                    fontSize: 13,
-                                                    fontFamily:
-                                                    'OpenSans-Bold',
-                                                    color: Colors.white),
-                                              ))),
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ));
-                      } else if (phoneController.text.length != 10) {
-                        Get.defaultDialog(
-                            title: "Error found",
-                            titleStyle: TextStyle(
-                                fontSize: 15,
-                                fontFamily: 'OpenSans-Bold',
-                                color: flyBlack2),
-                            content: Column(
-                              children: [
-                                Text(
-                                  "Phone Number is not valid",
-                                  style: TextStyle(
-                                      fontSize: 13,
+                                  content: Column(
+                                    children: [
+                                      Text(
+                                        "Name must be at least 3 characters",
+                                        style: TextStyle(
+                                            fontSize: 13,
+                                            fontFamily: 'OpenSans-Bold',
+                                            color: flyBlack2),
+                                      ),
+                                      SizedBox(
+                                        height: H * 0.02,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          InkWell(
+                                            onTap: () {
+                                              Get.back();
+                                            },
+                                            child: Container(
+                                                height: H * 0.05,
+                                                width: W * 0.2,
+                                                decoration: BoxDecoration(
+                                                    color: flyOrange2,
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                8))),
+                                                child: Center(
+                                                    child: Text(
+                                                  "Ok",
+                                                  style: TextStyle(
+                                                      fontSize: 13,
+                                                      fontFamily:
+                                                          'OpenSans-Bold',
+                                                      color: Colors.white),
+                                                ))),
+                                          ),
+                                          SizedBox(
+                                            width: W * 0.05,
+                                          ),
+                                          InkWell(
+                                            onTap: () {
+                                              Get.back();
+                                            },
+                                            child: Container(
+                                                height: H * 0.05,
+                                                width: W * 0.2,
+                                                decoration: BoxDecoration(
+                                                    color: flyGray3,
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                8))),
+                                                child: Center(
+                                                    child: Text(
+                                                  "cancel",
+                                                  style: TextStyle(
+                                                      fontSize: 13,
+                                                      fontFamily:
+                                                          'OpenSans-Bold',
+                                                      color: Colors.white),
+                                                ))),
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ));
+                            } else if (phoneController.text.length != 10) {
+                              Get.defaultDialog(
+                                  title: "Error found",
+                                  titleStyle: TextStyle(
+                                      fontSize: 15,
                                       fontFamily: 'OpenSans-Bold',
                                       color: flyBlack2),
-                                ),
-                                SizedBox(
-                                  height: H * 0.02,
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.center,
-                                  children: [
-                                    InkWell(
-                                      onTap: () {
-                                        Get.back();
-                                      },
-                                      child: Container(
-                                          height: H * 0.05,
-                                          width: W * 0.2,
-                                          decoration: BoxDecoration(
-                                              color: flyOrange2,
-                                              borderRadius:
-                                              BorderRadius.all(
-                                                  Radius.circular(
-                                                      8))),
-                                          child: Center(
-                                              child: Text(
-                                                "Ok",
-                                                style: TextStyle(
-                                                    fontSize: 13,
-                                                    fontFamily:
-                                                    'OpenSans-Bold',
-                                                    color: Colors.white),
-                                              ))),
-                                    ),
-                                    SizedBox(
-                                      width: W * 0.05,
-                                    ),
-                                    InkWell(
-                                      onTap: () {
-                                        Get.back();
-                                      },
-                                      child: Container(
-                                          height: H * 0.05,
-                                          width: W * 0.2,
-                                          decoration: BoxDecoration(
-                                              color: flyGray3,
-                                              borderRadius:
-                                              BorderRadius.all(
-                                                  Radius.circular(
-                                                      8))),
-                                          child: Center(
-                                              child: Text(
-                                                "cancel",
-                                                style: TextStyle(
-                                                    fontSize: 13,
-                                                    fontFamily:
-                                                    'OpenSans-Bold',
-                                                    color: Colors.white),
-                                              ))),
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ));
-                      } else if (!emailController.text.contains(RegExp(
-                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+"))) {
-                        Get.defaultDialog(
-                            title: "Error found",
-                            titleStyle: TextStyle(
-                                fontSize: 15,
-                                fontFamily: 'OpenSans-Bold',
-                                color: flyBlack2),
-                            content: Column(
-                              children: [
-                                Text(
-                                  "Email address is not valid",
-                                  style: TextStyle(
-                                      fontSize: 13,
+                                  content: Column(
+                                    children: [
+                                      Text(
+                                        "Phone Number is not valid",
+                                        style: TextStyle(
+                                            fontSize: 13,
+                                            fontFamily: 'OpenSans-Bold',
+                                            color: flyBlack2),
+                                      ),
+                                      SizedBox(
+                                        height: H * 0.02,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          InkWell(
+                                            onTap: () {
+                                              Get.back();
+                                            },
+                                            child: Container(
+                                                height: H * 0.05,
+                                                width: W * 0.2,
+                                                decoration: BoxDecoration(
+                                                    color: flyOrange2,
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                8))),
+                                                child: Center(
+                                                    child: Text(
+                                                  "Ok",
+                                                  style: TextStyle(
+                                                      fontSize: 13,
+                                                      fontFamily:
+                                                          'OpenSans-Bold',
+                                                      color: Colors.white),
+                                                ))),
+                                          ),
+                                          SizedBox(
+                                            width: W * 0.05,
+                                          ),
+                                          InkWell(
+                                            onTap: () {
+                                              Get.back();
+                                            },
+                                            child: Container(
+                                                height: H * 0.05,
+                                                width: W * 0.2,
+                                                decoration: BoxDecoration(
+                                                    color: flyGray3,
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                8))),
+                                                child: Center(
+                                                    child: Text(
+                                                  "cancel",
+                                                  style: TextStyle(
+                                                      fontSize: 13,
+                                                      fontFamily:
+                                                          'OpenSans-Bold',
+                                                      color: Colors.white),
+                                                ))),
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ));
+                            } else if (!emailController.text.contains(RegExp(
+                                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+"))) {
+                              Get.defaultDialog(
+                                  title: "Error found",
+                                  titleStyle: TextStyle(
+                                      fontSize: 15,
                                       fontFamily: 'OpenSans-Bold',
                                       color: flyBlack2),
-                                ),
-                                SizedBox(
-                                  height: H * 0.02,
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.center,
-                                  children: [
-                                    InkWell(
-                                      onTap: () {
-                                        Get.back();
-                                      },
-                                      child: Container(
-                                          height: H * 0.05,
-                                          width: W * 0.2,
-                                          decoration: BoxDecoration(
-                                              color: flyOrange2,
-                                              borderRadius:
-                                              BorderRadius.all(
-                                                  Radius.circular(
-                                                      8))),
-                                          child: Center(
-                                              child: Text(
-                                                "Ok",
-                                                style: TextStyle(
-                                                    fontSize: 13,
-                                                    fontFamily:
-                                                    'OpenSans-Bold',
-                                                    color: Colors.white),
-                                              ))),
-                                    ),
-                                    SizedBox(
-                                      width: W * 0.05,
-                                    ),
-                                    InkWell(
-                                      onTap: () {
-                                        Get.back();
-                                      },
-                                      child: Container(
-                                          height: H * 0.05,
-                                          width: W * 0.2,
-                                          decoration: BoxDecoration(
-                                              color: flyGray3,
-                                              borderRadius:
-                                              BorderRadius.all(
-                                                  Radius.circular(
-                                                      8))),
-                                          child: Center(
-                                              child: Text(
-                                                "cancel",
-                                                style: TextStyle(
-                                                    fontSize: 13,
-                                                    fontFamily:
-                                                    'OpenSans-Bold',
-                                                    color: Colors.white),
-                                              ))),
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ));
-                      } else if (passwordController.text.length < 6) {
-                        Get.defaultDialog(
-                            title: "Error found",
-                            titleStyle: TextStyle(
-                                fontSize: 15,
-                                fontFamily: 'OpenSans-Bold',
-                                color: flyBlack2),
-                            content: Column(
-                              children: [
-                                Text(
-                                  "Password must be atleast 6 characters",
-                                  style: TextStyle(
-                                      fontSize: 13,
+                                  content: Column(
+                                    children: [
+                                      Text(
+                                        "Email address is not valid",
+                                        style: TextStyle(
+                                            fontSize: 13,
+                                            fontFamily: 'OpenSans-Bold',
+                                            color: flyBlack2),
+                                      ),
+                                      SizedBox(
+                                        height: H * 0.02,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          InkWell(
+                                            onTap: () {
+                                              Get.back();
+                                            },
+                                            child: Container(
+                                                height: H * 0.05,
+                                                width: W * 0.2,
+                                                decoration: BoxDecoration(
+                                                    color: flyOrange2,
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                8))),
+                                                child: Center(
+                                                    child: Text(
+                                                  "Ok",
+                                                  style: TextStyle(
+                                                      fontSize: 13,
+                                                      fontFamily:
+                                                          'OpenSans-Bold',
+                                                      color: Colors.white),
+                                                ))),
+                                          ),
+                                          SizedBox(
+                                            width: W * 0.05,
+                                          ),
+                                          InkWell(
+                                            onTap: () {
+                                              Get.back();
+                                            },
+                                            child: Container(
+                                                height: H * 0.05,
+                                                width: W * 0.2,
+                                                decoration: BoxDecoration(
+                                                    color: flyGray3,
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                8))),
+                                                child: Center(
+                                                    child: Text(
+                                                  "cancel",
+                                                  style: TextStyle(
+                                                      fontSize: 13,
+                                                      fontFamily:
+                                                          'OpenSans-Bold',
+                                                      color: Colors.white),
+                                                ))),
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ));
+                            } else if (passwordController.text.length < 6) {
+                              Get.defaultDialog(
+                                  title: "Error found",
+                                  titleStyle: TextStyle(
+                                      fontSize: 15,
                                       fontFamily: 'OpenSans-Bold',
                                       color: flyBlack2),
-                                ),
-                                SizedBox(
-                                  height: H * 0.02,
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.center,
-                                  children: [
-                                    InkWell(
-                                      onTap: () {
-                                        Get.back();
-                                      },
-                                      child: Container(
-                                          height: H * 0.05,
-                                          width: W * 0.2,
-                                          decoration: BoxDecoration(
-                                              color: flyOrange2,
-                                              borderRadius:
-                                              BorderRadius.all(
-                                                  Radius.circular(
-                                                      8))),
-                                          child: Center(
-                                              child: Text(
-                                                "Ok",
-                                                style: TextStyle(
-                                                    fontSize: 13,
-                                                    fontFamily:
-                                                    'OpenSans-Bold',
-                                                    color: Colors.white),
-                                              ))),
-                                    ),
-                                    SizedBox(
-                                      width: W * 0.05,
-                                    ),
-                                    InkWell(
-                                      onTap: () {
-                                        Get.back();
-                                      },
-                                      child: Container(
-                                          height: H * 0.05,
-                                          width: W * 0.2,
-                                          decoration: BoxDecoration(
-                                              color: flyGray3,
-                                              borderRadius:
-                                              BorderRadius.all(
-                                                  Radius.circular(
-                                                      8))),
-                                          child: Center(
-                                              child: Text(
-                                                "cancel",
-                                                style: TextStyle(
-                                                    fontSize: 13,
-                                                    fontFamily:
-                                                    'OpenSans-Bold',
-                                                    color: Colors.white),
-                                              ))),
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ));
-                      } else if (passwordController.text.length !=
-                          confirmPasswordController.text.length) {
-                        Get.defaultDialog(
-                            title: "Error found",
-                            titleStyle: TextStyle(
-                                fontSize: 15,
-                                fontFamily: 'OpenSans-Bold',
-                                color: flyBlack2),
-                            content: Column(
-                              children: [
-                                Text(
-                                  "Password dose not match",
-                                  style: TextStyle(
-                                      fontSize: 13,
+                                  content: Column(
+                                    children: [
+                                      Text(
+                                        "Password must be atleast 6 characters",
+                                        style: TextStyle(
+                                            fontSize: 13,
+                                            fontFamily: 'OpenSans-Bold',
+                                            color: flyBlack2),
+                                      ),
+                                      SizedBox(
+                                        height: H * 0.02,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          InkWell(
+                                            onTap: () {
+                                              Get.back();
+                                            },
+                                            child: Container(
+                                                height: H * 0.05,
+                                                width: W * 0.2,
+                                                decoration: BoxDecoration(
+                                                    color: flyOrange2,
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                8))),
+                                                child: Center(
+                                                    child: Text(
+                                                  "Ok",
+                                                  style: TextStyle(
+                                                      fontSize: 13,
+                                                      fontFamily:
+                                                          'OpenSans-Bold',
+                                                      color: Colors.white),
+                                                ))),
+                                          ),
+                                          SizedBox(
+                                            width: W * 0.05,
+                                          ),
+                                          InkWell(
+                                            onTap: () {
+                                              Get.back();
+                                            },
+                                            child: Container(
+                                                height: H * 0.05,
+                                                width: W * 0.2,
+                                                decoration: BoxDecoration(
+                                                    color: flyGray3,
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                8))),
+                                                child: Center(
+                                                    child: Text(
+                                                  "cancel",
+                                                  style: TextStyle(
+                                                      fontSize: 13,
+                                                      fontFamily:
+                                                          'OpenSans-Bold',
+                                                      color: Colors.white),
+                                                ))),
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ));
+                            } else if (passwordController.text.length !=
+                                confirmPasswordController.text.length) {
+                              Get.defaultDialog(
+                                  title: "Error found",
+                                  titleStyle: TextStyle(
+                                      fontSize: 15,
                                       fontFamily: 'OpenSans-Bold',
                                       color: flyBlack2),
-                                ),
-                                SizedBox(
-                                  height: H * 0.02,
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.center,
-                                  children: [
-                                    InkWell(
-                                      onTap: () {
-                                        Get.back();
-                                      },
-                                      child: Container(
-                                          height: H * 0.05,
-                                          width: W * 0.2,
-                                          decoration: BoxDecoration(
-                                              color: flyOrange2,
-                                              borderRadius:
-                                              BorderRadius.all(
-                                                  Radius.circular(
-                                                      8))),
-                                          child: Center(
-                                              child: Text(
-                                                "Ok",
-                                                style: TextStyle(
-                                                    fontSize: 13,
-                                                    fontFamily:
-                                                    'OpenSans-Bold',
-                                                    color: Colors.white),
-                                              ))),
-                                    ),
-                                    SizedBox(
-                                      width: W * 0.05,
-                                    ),
-                                    InkWell(
-                                      onTap: () {
-                                        Get.back();
-                                      },
-                                      child: Container(
-                                          height: H * 0.05,
-                                          width: W * 0.2,
-                                          decoration: BoxDecoration(
-                                              color: flyGray3,
-                                              borderRadius:
-                                              BorderRadius.all(
-                                                  Radius.circular(
-                                                      8))),
-                                          child: Center(
-                                              child: Text(
-                                                "cancel",
-                                                style: TextStyle(
-                                                    fontSize: 13,
-                                                    fontFamily:
-                                                    'OpenSans-Bold',
-                                                    color: Colors.white),
-                                              ))),
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ));
-                      } else if (image == null) {
-                        Get.defaultDialog(
-                            title: "Error found",
-                            titleStyle: TextStyle(
-                                fontSize: 15,
-                                fontFamily: 'OpenSans-Bold',
-                                color: flyBlack2),
-                            content: Column(
-                              children: [
-                                Text(
-                                  "Please upload your picture",
-                                  style: TextStyle(
-                                      fontSize: 13,
+                                  content: Column(
+                                    children: [
+                                      Text(
+                                        "Password does not match",
+                                        style: TextStyle(
+                                            fontSize: 13,
+                                            fontFamily: 'OpenSans-Bold',
+                                            color: flyBlack2),
+                                      ),
+                                      SizedBox(
+                                        height: H * 0.02,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          InkWell(
+                                            onTap: () {
+                                              Get.back();
+                                            },
+                                            child: Container(
+                                                height: H * 0.05,
+                                                width: W * 0.2,
+                                                decoration: BoxDecoration(
+                                                    color: flyOrange2,
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                8))),
+                                                child: Center(
+                                                    child: Text(
+                                                  "Ok",
+                                                  style: TextStyle(
+                                                      fontSize: 13,
+                                                      fontFamily:
+                                                          'OpenSans-Bold',
+                                                      color: Colors.white),
+                                                ))),
+                                          ),
+                                          SizedBox(
+                                            width: W * 0.05,
+                                          ),
+                                          InkWell(
+                                            onTap: () {
+                                              Get.back();
+                                            },
+                                            child: Container(
+                                                height: H * 0.05,
+                                                width: W * 0.2,
+                                                decoration: BoxDecoration(
+                                                    color: flyGray3,
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                8))),
+                                                child: Center(
+                                                    child: Text(
+                                                  "cancel",
+                                                  style: TextStyle(
+                                                      fontSize: 13,
+                                                      fontFamily:
+                                                          'OpenSans-Bold',
+                                                      color: Colors.white),
+                                                ))),
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ));
+                            } else if (image == null) {
+                              Get.defaultDialog(
+                                  title: "Error found",
+                                  titleStyle: TextStyle(
+                                      fontSize: 15,
                                       fontFamily: 'OpenSans-Bold',
                                       color: flyBlack2),
-                                ),
-                                SizedBox(
-                                  height: H * 0.02,
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.center,
-                                  children: [
-                                    InkWell(
-                                      onTap: () {
-                                        Get.back();
-                                      },
-                                      child: Container(
-                                          height: H * 0.05,
-                                          width: W * 0.2,
-                                          decoration: BoxDecoration(
-                                              color: flyOrange2,
-                                              borderRadius:
-                                              BorderRadius.all(
-                                                  Radius.circular(
-                                                      8))),
-                                          child: Center(
-                                              child: Text(
-                                                "Ok",
-                                                style: TextStyle(
-                                                    fontSize: 13,
-                                                    fontFamily:
-                                                    'OpenSans-Bold',
-                                                    color: Colors.white),
-                                              ))),
-                                    ),
-                                    SizedBox(
-                                      width: W * 0.05,
-                                    ),
-                                    InkWell(
-                                      onTap: () {
-                                        Get.back();
-                                      },
-                                      child: Container(
-                                          height: H * 0.05,
-                                          width: W * 0.2,
-                                          decoration: BoxDecoration(
-                                              color: flyGray3,
-                                              borderRadius:
-                                              BorderRadius.all(
-                                                  Radius.circular(
-                                                      8))),
-                                          child: Center(
-                                              child: Text(
-                                                "cancel",
-                                                style: TextStyle(
-                                                    fontSize: 13,
-                                                    fontFamily:
-                                                    'OpenSans-Bold',
-                                                    color: Colors.white),
-                                              ))),
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ));
-                      }
-                      else if  ( file1 == null) {
-                        Get.defaultDialog(
-                            title: "Error found",
-                            titleStyle: TextStyle(
-                                fontSize: 15,
-                                fontFamily: 'OpenSans-Bold',
-                                color: flyBlack2),
-                            content: Column(
-                              children: [
-                                Text(
-                                  "Driving license picture must be provided",
-                                  style: TextStyle(
-                                      fontSize: 13,
+                                  content: Column(
+                                    children: [
+                                      Text(
+                                        "Please upload your picture",
+                                        style: TextStyle(
+                                            fontSize: 13,
+                                            fontFamily: 'OpenSans-Bold',
+                                            color: flyBlack2),
+                                      ),
+                                      SizedBox(
+                                        height: H * 0.02,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          InkWell(
+                                            onTap: () {
+                                              Get.back();
+                                            },
+                                            child: Container(
+                                                height: H * 0.05,
+                                                width: W * 0.2,
+                                                decoration: BoxDecoration(
+                                                    color: flyOrange2,
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                8))),
+                                                child: Center(
+                                                    child: Text(
+                                                  "Ok",
+                                                  style: TextStyle(
+                                                      fontSize: 13,
+                                                      fontFamily:
+                                                          'OpenSans-Bold',
+                                                      color: Colors.white),
+                                                ))),
+                                          ),
+                                          SizedBox(
+                                            width: W * 0.05,
+                                          ),
+                                          InkWell(
+                                            onTap: () {
+                                              Get.back();
+                                            },
+                                            child: Container(
+                                                height: H * 0.05,
+                                                width: W * 0.2,
+                                                decoration: BoxDecoration(
+                                                    color: flyGray3,
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                8))),
+                                                child: Center(
+                                                    child: Text(
+                                                  "cancel",
+                                                  style: TextStyle(
+                                                      fontSize: 13,
+                                                      fontFamily:
+                                                          'OpenSans-Bold',
+                                                      color: Colors.white),
+                                                ))),
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ));
+                            } else if (file1 == null) {
+                              Get.defaultDialog(
+                                  title: "Error found",
+                                  titleStyle: TextStyle(
+                                      fontSize: 15,
                                       fontFamily: 'OpenSans-Bold',
                                       color: flyBlack2),
-                                ),
-                                SizedBox(
-                                  height: H * 0.02,
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.center,
-                                  children: [
-                                    InkWell(
-                                      onTap: () {
-                                        Get.back();
-                                      },
-                                      child: Container(
-                                          height: H * 0.05,
-                                          width: W * 0.2,
-                                          decoration: BoxDecoration(
-                                              color: flyOrange2,
-                                              borderRadius:
-                                              BorderRadius.all(
-                                                  Radius.circular(
-                                                      8))),
-                                          child: Center(
-                                              child: Text(
-                                                "Ok",
-                                                style: TextStyle(
-                                                    fontSize: 13,
-                                                    fontFamily:
-                                                    'OpenSans-Bold',
-                                                    color: Colors.white),
-                                              ))),
-                                    ),
-                                    SizedBox(
-                                      width: W * 0.05,
-                                    ),
-                                    InkWell(
-                                      onTap: () {
-                                        Get.back();
-                                      },
-                                      child: Container(
-                                          height: H * 0.05,
-                                          width: W * 0.2,
-                                          decoration: BoxDecoration(
-                                              color: flyGray3,
-                                              borderRadius:
-                                              BorderRadius.all(
-                                                  Radius.circular(
-                                                      8))),
-                                          child: Center(
-                                              child: Text(
-                                                "cancel",
-                                                style: TextStyle(
-                                                    fontSize: 13,
-                                                    fontFamily:
-                                                    'OpenSans-Bold',
-                                                    color: Colors.white),
-                                              ))),
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ));
-                      }
-                      else if (_myState == null){
-                        Get.defaultDialog(
-                            title: "Error found",
-                            titleStyle: TextStyle(
-                                fontSize: 15,
-                                fontFamily: 'OpenSans-Bold',
-                                color: flyBlack2),
-                            content: Column(
-                              children: [
-                                Text(
-                                  "Please select the type of document",
-                                  style: TextStyle(
-                                      fontSize: 13,
+                                  content: Column(
+                                    children: [
+                                      Text(
+                                        "Driving license picture must be provided",
+                                        style: TextStyle(
+                                            fontSize: 13,
+                                            fontFamily: 'OpenSans-Bold',
+                                            color: flyBlack2),
+                                      ),
+                                      SizedBox(
+                                        height: H * 0.02,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          InkWell(
+                                            onTap: () {
+                                              Get.back();
+                                            },
+                                            child: Container(
+                                                height: H * 0.05,
+                                                width: W * 0.2,
+                                                decoration: BoxDecoration(
+                                                    color: flyOrange2,
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                8))),
+                                                child: Center(
+                                                    child: Text(
+                                                  "Ok",
+                                                  style: TextStyle(
+                                                      fontSize: 13,
+                                                      fontFamily:
+                                                          'OpenSans-Bold',
+                                                      color: Colors.white),
+                                                ))),
+                                          ),
+                                          SizedBox(
+                                            width: W * 0.05,
+                                          ),
+                                          InkWell(
+                                            onTap: () {
+                                              Get.back();
+                                            },
+                                            child: Container(
+                                                height: H * 0.05,
+                                                width: W * 0.2,
+                                                decoration: BoxDecoration(
+                                                    color: flyGray3,
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                8))),
+                                                child: Center(
+                                                    child: Text(
+                                                  "cancel",
+                                                  style: TextStyle(
+                                                      fontSize: 13,
+                                                      fontFamily:
+                                                          'OpenSans-Bold',
+                                                      color: Colors.white),
+                                                ))),
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ));
+                            } else if (_myState == null) {
+                              Get.defaultDialog(
+                                  title: "Error found",
+                                  titleStyle: TextStyle(
+                                      fontSize: 15,
                                       fontFamily: 'OpenSans-Bold',
                                       color: flyBlack2),
-                                ),
-                                SizedBox(
-                                  height: H * 0.02,
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.center,
-                                  children: [
-                                    InkWell(
-                                      onTap: () {
-                                        Get.back();
-                                      },
-                                      child: Container(
-                                          height: H * 0.05,
-                                          width: W * 0.2,
-                                          decoration: BoxDecoration(
-                                              color: flyOrange2,
-                                              borderRadius:
-                                              BorderRadius.all(
-                                                  Radius.circular(
-                                                      8))),
-                                          child: Center(
-                                              child: Text(
-                                                "Ok",
-                                                style: TextStyle(
-                                                    fontSize: 13,
-                                                    fontFamily:
-                                                    'OpenSans-Bold',
-                                                    color: Colors.white),
-                                              ))),
-                                    ),
-                                    SizedBox(
-                                      width: W * 0.05,
-                                    ),
-                                    InkWell(
-                                      onTap: () {
-                                        Get.back();
-                                      },
-                                      child: Container(
-                                          height: H * 0.05,
-                                          width: W * 0.2,
-                                          decoration: BoxDecoration(
-                                              color: flyGray3,
-                                              borderRadius:
-                                              BorderRadius.all(
-                                                  Radius.circular(
-                                                      8))),
-                                          child: Center(
-                                              child: Text(
-                                                "cancel",
-                                                style: TextStyle(
-                                                    fontSize: 13,
-                                                    fontFamily:
-                                                    'OpenSans-Bold',
-                                                    color: Colors.white),
-                                              ))),
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ));
-                      }
-                      else {
-                        // _myState == "Driving License"?
-                        signUp2(
-                            fullNameController.text.trim(),
-                            emailController.text.trim(),
-                            passwordController.text.trim(),
-                            confirmPasswordController.text.trim(),
-                            phoneController.text.trim(),
-                            image!,
-                            file1!
-                            , file2!,
-                            context
-                        );
-                      }
-                    },
-                    child: Container(
-                      width: W * 0.8,
-                      height: H * 0.08,
-                      decoration: BoxDecoration(
-                          borderRadius:
-                          BorderRadius.all(Radius.circular(5)),
-                          gradient: LinearGradient(
-                              colors: [flyOrange1, flyOrange2],
-                              begin: Alignment.bottomLeft,
-                              end: Alignment.topRight)),
-                      child: Center(
-                          child: Text(
+                                  content: Column(
+                                    children: [
+                                      Text(
+                                        "Please select the type of document",
+                                        style: TextStyle(
+                                            fontSize: 13,
+                                            fontFamily: 'OpenSans-Bold',
+                                            color: flyBlack2),
+                                      ),
+                                      SizedBox(
+                                        height: H * 0.02,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          InkWell(
+                                            onTap: () {
+                                              Get.back();
+                                            },
+                                            child: Container(
+                                                height: H * 0.05,
+                                                width: W * 0.2,
+                                                decoration: BoxDecoration(
+                                                    color: flyOrange2,
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                8))),
+                                                child: Center(
+                                                    child: Text(
+                                                  "Ok",
+                                                  style: TextStyle(
+                                                      fontSize: 13,
+                                                      fontFamily:
+                                                          'OpenSans-Bold',
+                                                      color: Colors.white),
+                                                ))),
+                                          ),
+                                          SizedBox(
+                                            width: W * 0.05,
+                                          ),
+                                          InkWell(
+                                            onTap: () {
+                                              Get.back();
+                                            },
+                                            child: Container(
+                                                height: H * 0.05,
+                                                width: W * 0.2,
+                                                decoration: BoxDecoration(
+                                                    color: flyGray3,
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                8))),
+                                                child: Center(
+                                                    child: Text(
+                                                  "cancel",
+                                                  style: TextStyle(
+                                                      fontSize: 13,
+                                                      fontFamily:
+                                                          'OpenSans-Bold',
+                                                      color: Colors.white),
+                                                ))),
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ));
+                            } else {
+                              // _myState == "Driving License"?
+                              signUp2(
+                                  fullNameController.text.trim(),
+                                  emailController.text.trim(),
+                                  passwordController.text.trim(),
+                                  confirmPasswordController.text.trim(),
+                                  phoneController.text.trim(),
+                                  image!,
+                                  file1!,
+                                  file2!,
+                                  context);
+                            }
+                          },
+                          child: Container(
+                            width: W * 0.8,
+                            height: H * 0.08,
+                            decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(5)),
+                                gradient: LinearGradient(
+                                    colors: [flyOrange1, flyOrange2],
+                                    begin: Alignment.bottomLeft,
+                                    end: Alignment.topRight)),
+                            child: Center(
+                                child: Text(
+                              "Next",
+                              style: TextStyle(
+                                  fontFamily: "Opensans-Bold",
+                                  fontSize: 16,
+                                  color: Colors.white),
+                            )),
+                          ),
+                        )
+                      : Container(
+                          width: W * 0.8,
+                          height: H * 0.08,
+                          decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(5)),
+                              color: flyGray3),
+                          child: Center(
+                              child: Text(
                             "Next",
                             style: TextStyle(
                                 fontFamily: "Opensans-Bold",
                                 fontSize: 16,
                                 color: Colors.white),
                           )),
-                    ),
-                  )
-                      : Container(
-                    width: W * 0.8,
-                    height: H * 0.08,
-                    decoration: BoxDecoration(
-                        borderRadius:
-                        BorderRadius.all(Radius.circular(5)),
-                        color: flyGray3),
-                    child: Center(
-                        child: Text(
-                          "Next",
-                          style: TextStyle(
-                              fontFamily: "Opensans-Bold",
-                              fontSize: 16,
-                              color: Colors.white),
-                        )),
-                  ),
+                        ),
                   SizedBox(
                     height: H * 0.06,
                   ),
@@ -1587,6 +1630,7 @@ class _FacebookRegistrationState extends State<FacebookRegistration> {
       ],
     );
   }
+
   Row buildUploadNoDotted1(double H) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -1611,6 +1655,7 @@ class _FacebookRegistrationState extends State<FacebookRegistration> {
       ],
     );
   }
+
   Row buildUploadNoDotted2(double H) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -1636,7 +1681,7 @@ class _FacebookRegistrationState extends State<FacebookRegistration> {
     );
   }
 
-  buildDottedBorderRegister(double H, double W,String title) {
+  buildDottedBorderRegister(double H, double W, String title) {
     return Container(
       height: H * 0.1,
       width: W * 0.65,
@@ -1676,7 +1721,7 @@ class _FacebookRegistrationState extends State<FacebookRegistration> {
       "phone_number": phoneNumber,
       "display_picture": "data:image/jpg;base64,$base64Image",
       "document": "data:$imageMime;base64,$base64File",
-      "document_type" : _myState
+      "document_type": _myState
     });
     print("JSON DATA : ${mapData}");
     http.Response response = await http.post(Uri.parse(apiURL),
@@ -1724,15 +1769,15 @@ class _FacebookRegistrationState extends State<FacebookRegistration> {
                           decoration: BoxDecoration(
                               color: flyOrange2,
                               borderRadius:
-                              BorderRadius.all(Radius.circular(8))),
+                                  BorderRadius.all(Radius.circular(8))),
                           child: Center(
                               child: Text(
-                                "Ok",
-                                style: TextStyle(
-                                    fontSize: 13,
-                                    fontFamily: 'OpenSans-Bold',
-                                    color: Colors.white),
-                              ))),
+                            "Ok",
+                            style: TextStyle(
+                                fontSize: 13,
+                                fontFamily: 'OpenSans-Bold',
+                                color: Colors.white),
+                          ))),
                     ),
                   ],
                 )
@@ -1769,15 +1814,15 @@ class _FacebookRegistrationState extends State<FacebookRegistration> {
                           decoration: BoxDecoration(
                               color: flyOrange2,
                               borderRadius:
-                              BorderRadius.all(Radius.circular(8))),
+                                  BorderRadius.all(Radius.circular(8))),
                           child: Center(
                               child: Text(
-                                "Click here",
-                                style: TextStyle(
-                                    fontSize: 13,
-                                    fontFamily: 'OpenSans-Bold',
-                                    color: Colors.white),
-                              ))),
+                            "Click here",
+                            style: TextStyle(
+                                fontSize: 13,
+                                fontFamily: 'OpenSans-Bold',
+                                color: Colors.white),
+                          ))),
                     ),
                   ],
                 )
@@ -1790,11 +1835,25 @@ class _FacebookRegistrationState extends State<FacebookRegistration> {
       print(e.toString());
     }
   }
-  Future signUp2(String fullName, email, password, confirmPassword, phoneNumber,
-      File displayPicture, File drivingLicense1 , File drivingLicense2,BuildContext context) async {
-    showDialog(context: context, builder: (context){
-      return Center(child: CircularProgressIndicator(color: flyOrange2,));
-    });
+
+  Future signUp2(
+      String fullName,
+      email,
+      password,
+      confirmPassword,
+      phoneNumber,
+      File displayPicture,
+      File drivingLicense1,
+      File drivingLicense2,
+      BuildContext context) async {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return Center(
+              child: CircularProgressIndicator(
+            color: flyOrange2,
+          ));
+        });
     var apiURL = "https://ondemandflyers.com:8087/distributor/signup";
     final bytes2 = Io.File(drivingLicense1.path).readAsBytesSync();
     String base64File = base64.encode(bytes2);
@@ -1821,7 +1880,7 @@ class _FacebookRegistrationState extends State<FacebookRegistration> {
       "display_picture": "data:image/jpg;base64,$base64Image",
       "document_front": "data:$imageMime1;base64,$base64File",
       "document_back": "data:$imageMime2;base64,$base64File2",
-      "document_type" : _myState
+      "document_type": _myState
     });
     print("JSON DATA : ${mapData}");
     print(imageMime1);
@@ -1874,15 +1933,15 @@ class _FacebookRegistrationState extends State<FacebookRegistration> {
                           decoration: BoxDecoration(
                               color: flyOrange2,
                               borderRadius:
-                              BorderRadius.all(Radius.circular(8))),
+                                  BorderRadius.all(Radius.circular(8))),
                           child: Center(
                               child: Text(
-                                "Ok",
-                                style: TextStyle(
-                                    fontSize: 13,
-                                    fontFamily: 'OpenSans-Bold',
-                                    color: Colors.white),
-                              ))),
+                            "Ok",
+                            style: TextStyle(
+                                fontSize: 13,
+                                fontFamily: 'OpenSans-Bold',
+                                color: Colors.white),
+                          ))),
                     ),
                   ],
                 )
@@ -1890,8 +1949,7 @@ class _FacebookRegistrationState extends State<FacebookRegistration> {
             ));
         print("DataForResponse: ${data}");
         print("Response ye hai : ${response.statusCode}");
-      }
-      else if (response.statusCode == 409) {
+      } else if (response.statusCode == 409) {
         Navigator.of(context).pop();
         Get.defaultDialog(
             title: "Error found",
@@ -1921,15 +1979,15 @@ class _FacebookRegistrationState extends State<FacebookRegistration> {
                           decoration: BoxDecoration(
                               color: flyOrange2,
                               borderRadius:
-                              BorderRadius.all(Radius.circular(8))),
+                                  BorderRadius.all(Radius.circular(8))),
                           child: Center(
                               child: Text(
-                                "Click here",
-                                style: TextStyle(
-                                    fontSize: 13,
-                                    fontFamily: 'OpenSans-Bold',
-                                    color: Colors.white),
-                              ))),
+                            "Click here",
+                            style: TextStyle(
+                                fontSize: 13,
+                                fontFamily: 'OpenSans-Bold',
+                                color: Colors.white),
+                          ))),
                     ),
                   ],
                 )
@@ -1956,8 +2014,7 @@ class _FacebookRegistrationState extends State<FacebookRegistration> {
       "phone_number": phoneNumber,
     });
     http.Response response = await http.post(
-        Uri.parse(
-            "https://ondemandflyers.com:8087/distributor/signup"),
+        Uri.parse("https://ondemandflyers.com:8087/distributor/signup"),
         body: apiPostData);
     if (response.statusCode == 200) {
       print('successfull');
@@ -2052,8 +2109,7 @@ class _FacebookRegistrationState extends State<FacebookRegistration> {
     var stream = http.ByteStream(image!.openRead());
     stream.cast();
     var length = await image!.length();
-    var uri = Uri.parse(
-        "https://ondemandflyers.com:8087/distributor/signup");
+    var uri = Uri.parse("https://ondemandflyers.com:8087/distributor/signup");
     var request = http.MultipartRequest('POST', uri);
     request.fields['full_name'] = 'title';
     var multiPart = http.MultipartFile('display_picture', stream, length);
@@ -2153,6 +2209,7 @@ class _FacebookRegistrationState extends State<FacebookRegistration> {
       print("Failed to pick image:$e");
     }
   }
+
   Future pickImage3(ImageSource source) async {
     try {
       final file2 = await ImagePicker().pickImage(source: source);
@@ -2220,6 +2277,7 @@ class FirebaseApiForImage {
     }
   }
 }
+
 showProgressBar(BuildContext context) {
   showDialog(
       context: context,

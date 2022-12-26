@@ -62,7 +62,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
 
                   ),
                 ),
-                Text("You will get a OTP via mail",
+                Text("You will get an OTP via mail",
                   style: TextStyle(
                     fontFamily: "OpenSans-Regular",
                     fontSize: 15,

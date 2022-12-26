@@ -23,82 +23,101 @@ class _InviteFriendsState extends State<InviteFriends> {
         elevation: 0,
         leading: Container(
             child: InkWell(
-                onTap: (){
+                onTap: () {
                   Get.back();
                 },
-                child: Icon(Icons.arrow_back,color: Color(0xFF4D4D4D),))),
+                child: Icon(
+                  Icons.arrow_back,
+                  color: Color(0xFF4D4D4D),
+                ))),
         title: Text("Invite Friends"),
         titleTextStyle: TextStyle(
           fontFamily: "OpenSans-Semibold",
-          fontSize: 18  ,
+          fontSize: 18,
           color: Colors.black,
-
         ),
         titleSpacing: 2,
-        actions: [InkWell(
-          onTap: (){
-            Get.to(Notifications());
-          },
-          child: Padding(
-            padding:  EdgeInsets.only(right: W*0.04),
-            child: Center(
-              child: Stack(
-                children: [
-                  Icon(Icons.notifications_none_outlined,color: flyBlack2,),
-                  Padding(
-                    padding:  EdgeInsets.only(left: W*0.03,),
-                    child: CircleAvatar(
-                      backgroundColor: flyOrange2,
-                      radius: 7,
-                      child: Text("!",style: TextStyle(
-                          fontSize: 11
-                      ),),
+        actions: [
+          InkWell(
+            onTap: () {
+              Get.to(Notifications());
+            },
+            child: Padding(
+              padding: EdgeInsets.only(right: W * 0.04),
+              child: Center(
+                child: Stack(
+                  children: [
+                    Icon(
+                      Icons.notifications_none_outlined,
+                      color: flyBlack2,
                     ),
-                  )
-                ],
+                    Padding(
+                      padding: EdgeInsets.only(
+                        left: W * 0.03,
+                      ),
+                      child: CircleAvatar(
+                        backgroundColor: flyOrange2,
+                        radius: 7,
+                        child: Text(
+                          "0",
+                          style: TextStyle(fontSize: 11),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
-          ),
-        )],
+          )
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(12),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Invite friends by",
-            style: TextStyle(
-              fontFamily: "OpenSans-Regular",
-              fontSize: 16,
-              color: Colors.black,
+            Text(
+              "Invite friends by",
+              style: TextStyle(
+                fontFamily: "OpenSans-Regular",
+                fontSize: 16,
+                color: Colors.black,
+              ),
             ),
+            SizedBox(
+              height: H * 0.03,
             ),
-            SizedBox(height: H*0.03,),
             Row(
               children: [
-                buildInviteCard(H, W,"assets/images/whatsapp.png"),
-                SizedBox(width: W*0.03,),
-                buildInviteCard(H, W,"assets/images/messenger.png"),
-                SizedBox(width: W*0.03,),
-                buildInviteCard(H, W,"assets/images/skype.png"),
-                SizedBox(width: W*0.03,),
-                buildInviteCard(H, W,"assets/images/gmail.png"),
+                buildInviteCard(H, W, "assets/images/whatsapp.png"),
+                SizedBox(
+                  width: W * 0.03,
+                ),
+                buildInviteCard(H, W, "assets/images/messenger.png"),
+                SizedBox(
+                  width: W * 0.03,
+                ),
+                buildInviteCard(H, W, "assets/images/skype.png"),
+                SizedBox(
+                  width: W * 0.03,
+                ),
+                buildInviteCard(H, W, "assets/images/gmail.png"),
               ],
             ),
-            SizedBox(height: H*0.05,),
+            SizedBox(
+              height: H * 0.05,
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ElevatedButton(
-                  onPressed: ()async{
-                    var url = "https://play.google.com/store/apps/details?id=flyerdistributor.randye.ridge.flyerapp";
+                  onPressed: () async {
+                    var url =
+                        "https://play.google.com/store/apps/details?id=flyerdistributor.randye.ridge.flyerapp";
                     await Share.share("Flyer Distributor : $url");
                   },
                   child: Row(
-                    children: [
-                      Text("Share"),
-                      Icon(Icons.share)
-                    ],
+                    children: [Text("Share"), Icon(Icons.share)],
                   ),
                 )
               ],
@@ -109,27 +128,25 @@ class _InviteFriendsState extends State<InviteFriends> {
     );
   }
 
-  Column buildInviteCard(double H, double W,String image) {
+  Column buildInviteCard(double H, double W, String image) {
     return Column(
-            children: [
-              Container(
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(8)),
-                      boxShadow: [BoxShadow(
-                          offset: Offset(4,4),
-                          blurRadius: 5,
-                          color: flyGray4
-                      )]
-                  ),
-                  height: H*0.11,
-                  width: W*0.21,
-                  child: Center(child: Container(
-                      height: H*0.05,
-                      child: ClipRRect(child: Image.asset(image))),)
-              ),
-
-            ],
-          );
+      children: [
+        Container(
+            decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(Radius.circular(8)),
+                boxShadow: [
+                  BoxShadow(
+                      offset: Offset(4, 4), blurRadius: 5, color: flyGray4)
+                ]),
+            height: H * 0.11,
+            width: W * 0.21,
+            child: Center(
+              child: Container(
+                  height: H * 0.05,
+                  child: ClipRRect(child: Image.asset(image))),
+            )),
+      ],
+    );
   }
 }

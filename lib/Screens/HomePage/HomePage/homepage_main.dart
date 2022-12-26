@@ -102,7 +102,7 @@ class _HomePageMainState extends State<HomePageMain> {
     // print(jobModel.jobTitle);
     var jsonData = jsonDecode(response.body);
     setState(() {
-      _jobs = jsonData['data'];
+      _jobs = jsonData['data'] ?? [];
       _loading = false;
     });
     print(jsonData);
@@ -535,7 +535,7 @@ class _HomePageMainState extends State<HomePageMain> {
                     height: H * 0.01,
                   ),
                   Text(
-                    "     Prefered job list",
+                    "     Preferred job list",
                     style: TextStyle(
                         fontSize: 15,
                         fontFamily: 'OpenSans-Bold',
@@ -706,7 +706,7 @@ class _HomePageMainState extends State<HomePageMain> {
                                 width: W * 0.04,
                               ),
                               Text(
-                                "Look's like no job your location...",
+                                "Preferred job not available...",
                                 maxLines: 2,
                                 style: TextStyle(
                                     fontSize: 12,

@@ -42,14 +42,13 @@ class _JobDetailsMyJobsState extends State<JobDetailsMyJobs> {
   Future getProfileData() async {
     userNameAPI = await getName();
     userEmail = await getEmail();
-    setState((){});
+    setState(() {});
     tokenAPI = await getToken();
     setState(() {
       tokenAPI;
       print(tokenAPI);
     });
-    var url =
-        "https://ondemandflyers.com:8087/distributor/profile";
+    var url = "https://ondemandflyers.com:8087/distributor/profile";
     var response = await http.get(
       Uri.parse(
         url,
@@ -64,10 +63,10 @@ class _JobDetailsMyJobsState extends State<JobDetailsMyJobs> {
     print("This is my Profile : $jsonData");
     nameForProfile = jsonData["data"]["full_name"];
 
-
     print(jsonData["data"]["full_name"]);
-    setState((){});
+    setState(() {});
   }
+
   Future<DataModel> getMyJobData() async {
     tokenAPI = await getToken();
     jobApiId = await getJobId();
@@ -80,7 +79,7 @@ class _JobDetailsMyJobsState extends State<JobDetailsMyJobs> {
     numDays = await getNumOfDaysRequired();
     startLocation = await getStartLocation();
     endLocation = await getEndLocation();
-    setState((){});
+    setState(() {});
     print(jobTitle);
     print(numDays);
     print(tokenAPI);
@@ -88,33 +87,40 @@ class _JobDetailsMyJobsState extends State<JobDetailsMyJobs> {
     var jobId = "$jobApiId";
     var url = "$baseurl/$jobId";
     print("This is my job id : $jobId");
-    var response = await http.get(Uri.parse(url,),
+    var response = await http.get(
+      Uri.parse(
+        url,
+      ),
       headers: {
         'x-access-token': "$tokenAPI",
-      },);
+      },
+    );
 
-    var  jsonData = jsonDecode(response.body);
-    setState((){
+    var jsonData = jsonDecode(response.body);
+    setState(() {
       print("printToken : $tokenAPI");
       Approved = jsonData['data']['isApproved'];
     });
     print(Approved);
     return jsonData;
   }
-  Future getUserData()async{
+
+  Future getUserData() async {
     userNameAPI = await getName();
     userEmail = await getEmail();
-    setState((){
+    setState(() {
       userNameAPI;
       userEmail;
     });
   }
+
   @override
-  void initState(){
+  void initState() {
     getUserData();
     getMyJobData();
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     final DateFormat formatter = DateFormat('yyyy-MM-dd');
@@ -127,135 +133,146 @@ class _JobDetailsMyJobsState extends State<JobDetailsMyJobs> {
         elevation: 0,
         leading: Container(
             child: InkWell(
-                onTap: (){
+                onTap: () {
                   Get.back();
                 },
-                child: Icon(Icons.arrow_back,color: Color(0xFF4D4D4D),))),
+                child: Icon(
+                  Icons.arrow_back,
+                  color: Color(0xFF4D4D4D),
+                ))),
         title: Text("Job Status"),
         titleTextStyle: TextStyle(
           fontFamily: "OpenSans-Semibold",
           fontSize: 22,
           color: Colors.black,
-
         ),
         titleSpacing: 2,
-        actions: [InkWell(
-          onTap: (){
-            Get.to(Notifications());
-          },
-          child: Padding(
-            padding:  EdgeInsets.only(right: W*0.04),
-            child: Center(
-              child: Stack(
-                children: [
-                  Icon(Icons.notifications_none_outlined,color: flyBlack2,),
-                  Padding(
-                    padding:  EdgeInsets.only(left: W*0.03,),
-                    child: CircleAvatar(
-                      backgroundColor: flyOrange2,
-                      radius: 7,
-                      child: Text("!",style: TextStyle(
-                          fontSize: 11
-                      ),),
+        actions: [
+          InkWell(
+            onTap: () {
+              Get.to(Notifications());
+            },
+            child: Padding(
+              padding: EdgeInsets.only(right: W * 0.04),
+              child: Center(
+                child: Stack(
+                  children: [
+                    Icon(
+                      Icons.notifications_none_outlined,
+                      color: flyBlack2,
                     ),
-                  )
-                ],
+                    Padding(
+                      padding: EdgeInsets.only(
+                        left: W * 0.03,
+                      ),
+                      child: CircleAvatar(
+                        backgroundColor: flyOrange2,
+                        radius: 7,
+                        child: Text(
+                          "0",
+                          style: TextStyle(fontSize: 11),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
-          ),
-        )],
+          )
+        ],
       ),
       body: Center(
-        child:Column(
+        child: Column(
           children: [
             Container(
-              height: H*0.45,
+              height: H * 0.45,
               child: Stack(
                 children: [
                   Align(
-                    alignment: Alignment.topCenter
-                    ,child: Container(
-                    height: H*0.2,
-                    width: W*0.9,
-                    decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                            colors: [flyMargenta,flyOrange2],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight
+                    alignment: Alignment.topCenter,
+                    child: Container(
+                      height: H * 0.2,
+                      width: W * 0.9,
+                      decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                              colors: [flyMargenta, flyOrange2],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight),
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
+                      child: Padding(
+                        padding: EdgeInsets.only(left: W * 0.05, top: H * 0.02),
+                        child: Row(
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "CORPORATE",
+                                  style: TextStyle(
+                                      fontFamily: "Gothic-Regular",
+                                      color: Colors.white,
+                                      fontSize: 23),
+                                ),
+                                Text(
+                                  "FLYER",
+                                  style: TextStyle(
+                                      fontFamily: "Gothic-Bold",
+                                      color: Colors.white,
+                                      fontSize: 45),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              width: W * 0.02,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  width: W * 0.4,
+                                  child: Text(
+                                    "$nameForProfile",
+                                    style: TextStyle(
+                                        overflow: TextOverflow.ellipsis,
+                                        fontFamily: "Gothic-Regular",
+                                        color: Colors.white,
+                                        fontSize: 20),
+                                  ),
+                                ),
+                                Container(
+                                  width: W * 0.42,
+                                  child: Text(
+                                    "$userEmail",
+                                    style: TextStyle(
+                                        fontFamily: "Gothic-Regular",
+                                        overflow: TextOverflow.ellipsis,
+                                        color: Colors.white,
+                                        fontSize: 10),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
-                        borderRadius: BorderRadius.all(Radius.circular(10))
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.only(left: W*0.05,top: H*0.02),
-                      child: Row(
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("CORPORATE",
-                                style: TextStyle(
-                                    fontFamily: "Gothic-Regular",
-                                    color: Colors.white,
-                                    fontSize: 23
-                                ),
-                              ),
-                              Text("FLYER",
-                                style: TextStyle(
-                                    fontFamily: "Gothic-Bold",
-                                    color: Colors.white,
-                                    fontSize: 45
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(width: W*0.02,),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                width: W*0.4,
-                                child: Text("$nameForProfile",
-                                  style: TextStyle(
-                                      overflow: TextOverflow.ellipsis,
-                                      fontFamily: "Gothic-Regular",
-                                      color: Colors.white,
-                                      fontSize: 20
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                width: W*0.42,
-                                child: Text("$userEmail",
-                                  style: TextStyle(
-                                      fontFamily: "Gothic-Regular",
-                                      overflow: TextOverflow.ellipsis,
-                                      color: Colors.white,
-                                      fontSize: 10
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
                       ),
                     ),
-                  ),
                   ),
                   Align(
                     alignment: Alignment.center,
                     child: Padding(
-                      padding:  EdgeInsets.only(top: H*0.1),
+                      padding: EdgeInsets.only(top: H * 0.1),
                       child: Container(
-                        width: W*0.8,
+                        width: W * 0.8,
                         decoration: BoxDecoration(
-                            boxShadow: [BoxShadow(
-                                offset: Offset.zero,
-                                color:flyGray4,
-                                blurRadius: 10
-                            )],
+                            boxShadow: [
+                              BoxShadow(
+                                  offset: Offset.zero,
+                                  color: flyGray4,
+                                  blurRadius: 10)
+                            ],
                             color: Colors.white,
-                            borderRadius: BorderRadius.all(Radius.circular(10))
-                        ),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10))),
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Column(
@@ -263,123 +280,129 @@ class _JobDetailsMyJobsState extends State<JobDetailsMyJobs> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Container(
-                                width: W*0.7,
-                                child: Text("$jobTitle",
+                                width: W * 0.7,
+                                child: Text(
+                                  "$jobTitle",
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                       fontFamily: 'OpenSans-Bold',
-                                      fontSize: 14
-                                  ),
+                                      fontSize: 14),
                                 ),
                               ),
-                              SizedBox(height: H*0.01,),
+                              SizedBox(
+                                height: H * 0.01,
+                              ),
                               Row(
                                 children: [
-                                  Text("Job Post Date:",
+                                  Text(
+                                    "Job Post Date:",
                                     style: TextStyle(
                                         fontFamily: 'OpenSans-Regular',
                                         fontSize: 16,
-                                        color: Color(0xFF808080)
-                                    ),
+                                        color: Color(0xFF808080)),
                                   ),
-                                  Text(formatter.parse("$startDate").toString(),
+                                  Text(
+                                    formatter.parse("$startDate").toString(),
                                     style: TextStyle(
                                         fontFamily: 'OpenSans-Regular',
                                         fontSize: 14,
-                                        color: Color(0xFF333333)
-                                    ),
+                                        color: Color(0xFF333333)),
                                   ),
                                 ],
                               ),
                               Row(
                                 children: [
-                                  Text("Completed By:",
+                                  Text(
+                                    "Completed By:",
                                     style: TextStyle(
                                         fontFamily: 'OpenSans-Regular',
                                         fontSize: 16,
-                                        color: Color(0xFF808080)
-                                    ),
+                                        color: Color(0xFF808080)),
                                   ),
-                                  Text(formatter.parse("$endDate").toString(),
+                                  Text(
+                                    formatter.parse("$endDate").toString(),
                                     style: TextStyle(
                                         fontFamily: 'OpenSans-Regular',
                                         fontSize: 14,
-                                        color: Color(0xFF333333)
-                                    ),
+                                        color: Color(0xFF333333)),
                                   ),
                                 ],
                               ),
-                              SizedBox(height: H*0.03,),
-                              Row(
-                                children: [
-                                  Text("Number of Flyers:",
-                                    style: TextStyle(
-                                        fontFamily: 'OpenSans-Regular',
-                                        fontSize: 15,
-                                        color: Color(0xFF808080)
-                                    ),
-                                  ),
-                                  Text(" $flyer",
-                                    style: TextStyle(
-                                        fontFamily: 'OpenSans-Regular',
-                                        fontSize: 15,
-                                        color: Color(0xFF333333)
-                                    ),
-                                  ),
-                                ],
+                              SizedBox(
+                                height: H * 0.03,
                               ),
                               Row(
                                 children: [
-                                  Text("Number of Doorhangers:",
+                                  Text(
+                                    "Number of Flyers:",
                                     style: TextStyle(
                                         fontFamily: 'OpenSans-Regular',
                                         fontSize: 15,
-                                        color: Color(0xFF808080)
-                                    ),
+                                        color: Color(0xFF808080)),
                                   ),
-                                  Text(" $doorHanger",
+                                  Text(
+                                    " $flyer",
                                     style: TextStyle(
                                         fontFamily: 'OpenSans-Regular',
                                         fontSize: 15,
-                                        color: Color(0xFF333333)
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: H*0.03,),
-                              Row(
-                                children: [
-                                  Text("Hourly rate:",
-                                    style: TextStyle(
-                                        fontFamily: 'OpenSans-Regular',
-                                        fontSize: 15,
-                                        color: Color(0xFF808080)
-                                    ),
-                                  ),
-                                  Text(" $hourlyRate",
-                                    style: TextStyle(
-                                        fontFamily: 'OpenSans-Regular',
-                                        fontSize: 15,
-                                        color: Color(0xFF333333)
-                                    ),
+                                        color: Color(0xFF333333)),
                                   ),
                                 ],
                               ),
                               Row(
                                 children: [
-                                  Text("Total Number Of Days:",
+                                  Text(
+                                    "Number of Doorhangers:",
                                     style: TextStyle(
                                         fontFamily: 'OpenSans-Regular',
                                         fontSize: 15,
-                                        color: Color(0xFF808080)
-                                    ),
+                                        color: Color(0xFF808080)),
                                   ),
-                                  Text(" $numDays",
+                                  Text(
+                                    " $doorHanger",
                                     style: TextStyle(
                                         fontFamily: 'OpenSans-Regular',
                                         fontSize: 15,
-                                        color: Color(0xFF333333)
-                                    ),
+                                        color: Color(0xFF333333)),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: H * 0.03,
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    "Hourly rate: (USD)",
+                                    style: TextStyle(
+                                        fontFamily: 'OpenSans-Regular',
+                                        fontSize: 15,
+                                        color: Color(0xFF808080)),
+                                  ),
+                                  Text(
+                                    " $hourlyRate",
+                                    style: TextStyle(
+                                        fontFamily: 'OpenSans-Regular',
+                                        fontSize: 15,
+                                        color: Color(0xFF333333)),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    "Total Number Of Days:",
+                                    style: TextStyle(
+                                        fontFamily: 'OpenSans-Regular',
+                                        fontSize: 15,
+                                        color: Color(0xFF808080)),
+                                  ),
+                                  Text(
+                                    " $numDays",
+                                    style: TextStyle(
+                                        fontFamily: 'OpenSans-Regular',
+                                        fontSize: 15,
+                                        color: Color(0xFF333333)),
                                   ),
                                 ],
                               ),
@@ -392,25 +415,23 @@ class _JobDetailsMyJobsState extends State<JobDetailsMyJobs> {
                 ],
               ),
             ),
-            Text("Job Location",
+            Text(
+              "Job Location",
               style: TextStyle(
-                  color: flyBlue1,
-                  fontFamily: "Opensans-Bold",
-                  fontSize: 15
-              ),
+                  color: flyBlue1, fontFamily: "Opensans-Bold", fontSize: 15),
             ),
-            SizedBox(height: H*0.01,),
+            SizedBox(
+              height: H * 0.01,
+            ),
             Container(
-              width: W*0.9,
+              width: W * 0.9,
               decoration: BoxDecoration(
-                  boxShadow: [BoxShadow(
-                      offset: Offset(1,1),
-                      color:flyGray4,
-                      blurRadius: 20
-                  )],
+                  boxShadow: [
+                    BoxShadow(
+                        offset: Offset(1, 1), color: flyGray4, blurRadius: 20)
+                  ],
                   color: Colors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(12))
-              ),
+                  borderRadius: BorderRadius.all(Radius.circular(12))),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
@@ -424,31 +445,31 @@ class _JobDetailsMyJobsState extends State<JobDetailsMyJobs> {
                           child: CircleAvatar(
                             radius: 19,
                             foregroundColor: Colors.black,
-                            backgroundColor: Colors.white
-                            ,child: Container(
-                            decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: AssetImage("assets/images/from_tracking.png"),
-                                )
+                            backgroundColor: Colors.white,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                image: AssetImage(
+                                    "assets/images/from_tracking.png"),
+                              )),
                             ),
-                          ),
                           ),
                         ),
                         Container(
-                          width: W*0.7,
-                          child: Text("  $startLocation",
+                          width: W * 0.7,
+                          child: Text(
+                            "  $startLocation",
                             style: TextStyle(
                                 overflow: TextOverflow.ellipsis,
                                 color: Color(0xFF333333),
                                 fontFamily: "Opensans-Regular",
-                                fontSize: 14
-                            ),
+                                fontSize: 14),
                           ),
                         ),
                       ],
                     ),
                     Padding(
-                      padding:  EdgeInsets.only(left: W*0.05),
+                      padding: EdgeInsets.only(left: W * 0.05),
                       child: Image.asset("assets/images/tracking_line.png"),
                     ),
                     Row(
@@ -459,25 +480,24 @@ class _JobDetailsMyJobsState extends State<JobDetailsMyJobs> {
                           child: CircleAvatar(
                             radius: 19,
                             foregroundColor: Colors.black,
-                            backgroundColor: Colors.white
-                            ,child: Container(
-                            decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: AssetImage("assets/images/map2.png"),
-                                )
+                            backgroundColor: Colors.white,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                image: AssetImage("assets/images/map2.png"),
+                              )),
                             ),
-                          ),
                           ),
                         ),
                         Container(
-                          width: W*0.7,
-                          child: Text("  $endLocation",
+                          width: W * 0.7,
+                          child: Text(
+                            "  $endLocation",
                             style: TextStyle(
                                 overflow: TextOverflow.ellipsis,
                                 color: Color(0xFF333333),
                                 fontFamily: "Opensans-Regular",
-                                fontSize: 13
-                            ),
+                                fontSize: 13),
                           ),
                         ),
                       ],
@@ -486,74 +506,76 @@ class _JobDetailsMyJobsState extends State<JobDetailsMyJobs> {
                 ),
               ),
             ),
-            SizedBox(height: H*0.04,),
-            Approved == true ? InkWell(
-              onTap: (){},
-              child: Container(
-                width: W*0.8,
-                height: H*0.08,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(5)),
-                    color: flyOrange2
-                ),
-                child: Center(child:
-                Text("Approved",
-                  style: TextStyle(
-                      fontFamily: "Opensans-Bold",
-                      fontSize: 16,
-                      color: Colors.white
-                  ),
-                )
-                ),
-              ),
-            ) : Column(
-              children: [
-                InkWell(
-                  onTap: (){},
-                  child: Container(
-                    width: W*0.8,
-                    height: H*0.08,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(5)),
-                        color: flyOrange2
+            SizedBox(
+              height: H * 0.04,
+            ),
+            Approved == true
+                ? InkWell(
+                    onTap: () {},
+                    child: Container(
+                      width: W * 0.8,
+                      height: H * 0.08,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(5)),
+                          color: flyOrange2),
+                      child: Center(
+                          child: Text(
+                        "Approved",
+                        style: TextStyle(
+                            fontFamily: "Opensans-Bold",
+                            fontSize: 16,
+                            color: Colors.white),
+                      )),
                     ),
-                    child: Center(child:
-                    Text("Pending",
-                  style: TextStyle(
-                      fontFamily: "Opensans-Bold",
-                      fontSize: 16,
-                      color: Colors.white
-                  ),
-                )
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: H*0.02,
-                ),
-                Text("Your request is in under process!!",
-                  style: TextStyle(
-                      fontFamily: "Opensans-Bold",
-                      fontSize: 16,
-                      color: flyOrange2
-                  ),
-                )
-              ],
-            )
+                  )
+                : Column(
+                    children: [
+                      InkWell(
+                        onTap: () {},
+                        child: Container(
+                          width: W * 0.8,
+                          height: H * 0.08,
+                          decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(5)),
+                              color: flyOrange2),
+                          child: Center(
+                              child: Text(
+                            "Pending",
+                            style: TextStyle(
+                                fontFamily: "Opensans-Bold",
+                                fontSize: 16,
+                                color: Colors.white),
+                          )),
+                        ),
+                      ),
+                      SizedBox(
+                        height: H * 0.02,
+                      ),
+                      Text(
+                        "Your request is in under process!!",
+                        style: TextStyle(
+                            fontFamily: "Opensans-Bold",
+                            fontSize: 16,
+                            color: flyOrange2),
+                      )
+                    ],
+                  )
           ],
         ),
       ),
     );
   }
+
   Future postJob() async {
     var baseurl = "https://nodeserver.mydevfactory.com:8087";
     var jobId = "62da743debbd0204069c0b07";
-    final response = await http.post(
-        Uri.parse("$baseurl/distributor/applyJob/$jobId"),
-        headers: {
-          'x-access-token': "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyZDhmNmEwOTQ4MzhiNjc5MDZiN2VmOCIsImlhdCI6MTY1ODQ3MTc2NiwiZXhwIjoxNjY4ODM5NzY2fQ.3tWNWqu9CQCAFMAlFJHsVQhAaMllwUugDY7xLaR7R-I",
-          "Content-Type": "application/json",
-        });
+    final response = await http
+        .post(Uri.parse("$baseurl/distributor/applyJob/$jobId"), headers: {
+      'x-access-token':
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyZDhmNmEwOTQ4MzhiNjc5MDZiN2VmOCIsImlhdCI6MTY1ODQ3MTc2NiwiZXhwIjoxNjY4ODM5NzY2fQ.3tWNWqu9CQCAFMAlFJHsVQhAaMllwUugDY7xLaR7R-I",
+      "Content-Type": "application/json",
+    });
     print(response.body);
   }
 }

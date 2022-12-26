@@ -7,20 +7,21 @@ import 'package:http/http.dart' as http;
 import '../Notifications/notifications.dart';
 import '../SharedPrefrence/sharedprefrence.dart';
 
-
 class TermsAndConditionCustomer extends StatefulWidget {
   const TermsAndConditionCustomer({Key? key}) : super(key: key);
 
   @override
-  State<TermsAndConditionCustomer> createState() => _TermsAndConditionCustomerState();
+  State<TermsAndConditionCustomer> createState() =>
+      _TermsAndConditionCustomerState();
 }
 
 class _TermsAndConditionCustomerState extends State<TermsAndConditionCustomer> {
   @override
-  void initState(){
+  void initState() {
     super.initState();
     getTermsAndConditions();
   }
+
   int _currentIndex = 0;
   String? title;
   String? description;
@@ -35,46 +36,55 @@ class _TermsAndConditionCustomerState extends State<TermsAndConditionCustomer> {
         backgroundColor: flyBackground,
         elevation: 0,
         leading: InkWell(
-          onTap: (){
+          onTap: () {
             Get.back();
           },
           child: Container(
-              child: Icon(Icons.arrow_back_ios,color: flyOrange2,size: 20,)),
+              child: Icon(
+            Icons.arrow_back_ios,
+            color: flyOrange2,
+            size: 20,
+          )),
         ),
         centerTitle: true,
-        title: title == null ? Text(
-            "Loading.."
-        ) : Text("Terms & Conditions"),
+        title: title == null ? Text("Loading..") : Text("Terms & Conditions"),
         titleTextStyle: TextStyle(
             fontSize: 20,
             fontFamily: "NunitoSans-Bold",
-            color:Color(0xFF184673)
-        ),
-        actions: [InkWell(
-          onTap: (){
-            Get.to(Notifications());
-          },
-          child: Padding(
-            padding:  EdgeInsets.only(right: W*0.04),
-            child: Center(
-              child: Stack(
-                children: [
-                  Icon(Icons.notifications_none_outlined,color: flyBlack2,),
-                  Padding(
-                    padding:  EdgeInsets.only(left: W*0.03,),
-                    child: CircleAvatar(
-                      backgroundColor: flyOrange2,
-                      radius: 7,
-                      child: Text("!",style: TextStyle(
-                          fontSize: 11
-                      ),),
+            color: Color(0xFF184673)),
+        actions: [
+          InkWell(
+            onTap: () {
+              Get.to(Notifications());
+            },
+            child: Padding(
+              padding: EdgeInsets.only(right: W * 0.04),
+              child: Center(
+                child: Stack(
+                  children: [
+                    Icon(
+                      Icons.notifications_none_outlined,
+                      color: flyBlack2,
                     ),
-                  )
-                ],
+                    Padding(
+                      padding: EdgeInsets.only(
+                        left: W * 0.03,
+                      ),
+                      child: CircleAvatar(
+                        backgroundColor: flyOrange2,
+                        radius: 7,
+                        child: Text(
+                          "0",
+                          style: TextStyle(fontSize: 11),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
-          ),
-        )],
+          )
+        ],
       ),
       backgroundColor: flyBackground,
       body: SingleChildScrollView(
@@ -83,44 +93,43 @@ class _TermsAndConditionCustomerState extends State<TermsAndConditionCustomer> {
           child: Container(
               decoration: BoxDecoration(
                   color: Color(0xFFE4E4E4),
-                  borderRadius: BorderRadius.all(Radius.circular(12))
-              ),
-
-              child:Padding(
+                  borderRadius: BorderRadius.all(Radius.circular(12))),
+              child: Padding(
                 padding: const EdgeInsets.all(10),
                 child: Column(
                   children: [
                     Container(
-                      height: H*0.18,
-                      width: W*0.9,
+                      height: H * 0.18,
+                      width: W * 0.9,
                       decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: NetworkImage(
-                                  "$image"
-                              )
-                          )
-                      ),
+                          image:
+                              DecorationImage(image: NetworkImage("$image"))),
                     ),
                     SizedBox(
-                      height: H*0.02,
+                      height: H * 0.02,
                     ),
-                    description == null ? Text(
-                        "Loading..",
-                        style: TextStyle(fontSize: 13,
-                            fontFamily: 'OpenSans-Bold',
-                            color: Color(0xFF184673))) : Text(_parseHtmlString("$description"),style: TextStyle(fontSize: 13,
-                        fontFamily: 'OpenSans-Bold',
-                        color: Color(0xFF184673)),)
+                    description == null
+                        ? Text("Loading..",
+                            style: TextStyle(
+                                fontSize: 13,
+                                fontFamily: 'OpenSans-Bold',
+                                color: Color(0xFF184673)))
+                        : Text(
+                            _parseHtmlString("$description"),
+                            style: TextStyle(
+                                fontSize: 13,
+                                fontFamily: 'OpenSans-Bold',
+                                color: Color(0xFF184673)),
+                          )
                   ],
                 ),
-              )
-          ),
+              )),
         ),
       ),
     );
   }
-  Future getTermsAndConditions() async {
 
+  Future getTermsAndConditions() async {
     var tokenAPI = await getToken();
     setState(() {
       print(tokenAPI);
@@ -144,9 +153,10 @@ class _TermsAndConditionCustomerState extends State<TermsAndConditionCustomer> {
     title = (jsonData["data"]["title"]);
     image = (jsonData["data"]["image"]);
     description = (jsonData["data"]["description"]);
-    setState((){});
+    setState(() {});
   }
 }
+
 String _parseHtmlString(String htmlString) {
   final document = parse(htmlString);
   final String parsedString = parse(document.body!.text).documentElement!.text;

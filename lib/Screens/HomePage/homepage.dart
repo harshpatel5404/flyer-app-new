@@ -75,7 +75,7 @@ class _HomePageState extends State<HomePage> {
     // print(jobModel.jobTitle);
     var jsonData = jsonDecode(response.body);
     print("This is my Profile : $jsonData");
-    nameForProfile = jsonData["data"]["full_name"];
+    nameForProfile = jsonData["data"]["full_name"] ?? "";
     dpForProfile = jsonData["data"]["display_picture"];
     print("This is my name : $nameForProfile");
     setState(() {});
@@ -207,7 +207,7 @@ class _HomePageState extends State<HomePage> {
                             backgroundColor: flyOrange2,
                             radius: 7,
                             child: Text(
-                              "!",
+                              "0",
                               style: TextStyle(fontSize: 11),
                             ),
                           ),
@@ -310,7 +310,7 @@ class _HomePageState extends State<HomePage> {
                     buildDrawerCard(
                         H, "assets/images/deliveries.png", "  Deliveries", 1),
                     buildDrawerCard(H, "assets/images/prefered_location.png",
-                        "  Prefered Location", 2),
+                        "  Preferred Location", 2),
                     buildDrawerCard(
                         H, "assets/images/shipments.png", "  Shipments", 3),
                     buildDrawerCard(
@@ -330,7 +330,7 @@ class _HomePageState extends State<HomePage> {
                         "  Face Recognition", 11),
                     buildDrawerCard(
                         H, "assets/images/logout.png", "  Logout", 12),
-                        buildDrawerCard(
+                    buildDrawerCard(
                         H, "assets/images/delete.png", "  Delete Account", 12),
                   ],
                 ),
@@ -548,8 +548,8 @@ class _HomePageState extends State<HomePage> {
     }
     switch (index) {
       case 12:
-      if(FirebaseAuth.instance.currentUser != null){
-        GoogleSignIn().signOut();
+        if (FirebaseAuth.instance.currentUser != null) {
+          GoogleSignIn().signOut();
         }
         FirebaseAuth.instance.signOut();
         removeEmail();

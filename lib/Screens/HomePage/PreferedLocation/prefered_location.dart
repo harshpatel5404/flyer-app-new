@@ -16,6 +16,7 @@ import 'package:http/http.dart' as http;
 import 'package:geocoding/geocoding.dart';
 
 import '../../SharedPrefrence/sharedprefrence.dart';
+
 class PreferedLocation extends StatefulWidget {
   const PreferedLocation({Key? key}) : super(key: key);
 
@@ -24,7 +25,6 @@ class PreferedLocation extends StatefulWidget {
 }
 
 class _PreferedLocationState extends State<PreferedLocation> {
-
   TextEditingController stateController = TextEditingController(text: "");
   TextEditingController cityController = TextEditingController(text: "");
   late GooglePlace? googlePlace;
@@ -38,70 +38,80 @@ class _PreferedLocationState extends State<PreferedLocation> {
   Future getLatLong() async {
     bool serviceEnabled;
     LocationPermission permission;
-    try{
+    try {
       var H = MediaQuery.of(context).size.height;
       var W = MediaQuery.of(context).size.width;
       serviceEnabled = await Geolocator.isLocationServiceEnabled();
-      if(!serviceEnabled){
-        return  Get.defaultDialog(
+      if (!serviceEnabled) {
+        return Get.defaultDialog(
             title: "",
             titleStyle: TextStyle(
-                fontSize: 15,
-                fontFamily: 'OpenSans-Bold',
-                color: flyBlack2
-            ),
+                fontSize: 15, fontFamily: 'OpenSans-Bold', color: flyBlack2),
             content: Column(
               children: [
-                Text("Please turn on your device location!",style:TextStyle(
-                    fontSize: 13,
-                    fontFamily: 'OpenSans-Bold',
-                    color: flyBlack2
-                ),),
-                SizedBox(height: H*0.02,),
+                Text(
+                  "Please turn on your device location!",
+                  style: TextStyle(
+                      fontSize: 13,
+                      fontFamily: 'OpenSans-Bold',
+                      color: flyBlack2),
+                ),
+                SizedBox(
+                  height: H * 0.02,
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     InkWell(
-                      onTap: (){
+                      onTap: () {
                         Get.back();
                       },
                       child: Container(
-                          height: H*0.05,
-                          width: W*0.2,
+                          height: H * 0.05,
+                          width: W * 0.2,
                           decoration: BoxDecoration(
                               color: flyOrange2,
-                              borderRadius: BorderRadius.all(Radius.circular(8))
-                          ),
-                          child: Center(child: Text("Ok",style: TextStyle(fontSize: 13,
-                              fontFamily: 'OpenSans-Bold',
-                              color: Colors.white),))
-                      ),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(8))),
+                          child: Center(
+                              child: Text(
+                            "Ok",
+                            style: TextStyle(
+                                fontSize: 13,
+                                fontFamily: 'OpenSans-Bold',
+                                color: Colors.white),
+                          ))),
                     ),
-                    SizedBox(width: W*0.05,),
+                    SizedBox(
+                      width: W * 0.05,
+                    ),
                     InkWell(
-                      onTap: (){
+                      onTap: () {
                         Get.back();
                       },
                       child: Container(
-                          height: H*0.05,
-                          width: W*0.2,
+                          height: H * 0.05,
+                          width: W * 0.2,
                           decoration: BoxDecoration(
                               color: flyGray3,
-                              borderRadius: BorderRadius.all(Radius.circular(8))
-                          ),
-                          child: Center(child: Text("cancel",style: TextStyle(fontSize: 13,
-                              fontFamily: 'OpenSans-Bold',
-                              color: Colors.white),))
-                      ),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(8))),
+                          child: Center(
+                              child: Text(
+                            "cancel",
+                            style: TextStyle(
+                                fontSize: 13,
+                                fontFamily: 'OpenSans-Bold',
+                                color: Colors.white),
+                          ))),
                     ),
                   ],
                 )
               ],
-            )
-        );
+            ));
       }
       permission = await Geolocator.checkPermission();
-      if(permission == LocationPermission.denied){
+      if (permission == LocationPermission.denied) {
         permission = await Geolocator.requestPermission();
         Position position = await Geolocator.getCurrentPosition(
             desiredAccuracy: LocationAccuracy.medium);
@@ -114,17 +124,16 @@ class _PreferedLocationState extends State<PreferedLocation> {
           "lat": lat,
           "lng": long,
         });
-        setState((){});
+        setState(() {});
         List<Placemark> placemark = await placemarkFromCoordinates(lat!, long!);
         print(placemark[0].toString());
-        setState((){
+        setState(() {
           subLocality = placemark[0].subLocality;
           locality = placemark[0].locality;
           state = placemark[0].administrativeArea;
           country = placemark[0].country;
         });
-      }
-      else if(permission == LocationPermission.whileInUse){
+      } else if (permission == LocationPermission.whileInUse) {
         Position position = await Geolocator.getCurrentPosition(
             desiredAccuracy: LocationAccuracy.medium);
         currentPosition = position;
@@ -136,10 +145,10 @@ class _PreferedLocationState extends State<PreferedLocation> {
           "lat": lat,
           "lng": long,
         });
-        setState((){});
+        setState(() {});
         List<Placemark> placemark = await placemarkFromCoordinates(lat!, long!);
         print(placemark[0].toString());
-        setState((){
+        setState(() {
           subLocality = placemark[0].subLocality;
           locality = placemark[0].locality;
           state = placemark[0].administrativeArea;
@@ -151,16 +160,18 @@ class _PreferedLocationState extends State<PreferedLocation> {
       Get.snackbar("Error", e.toString());
     }
   }
+
   List<AutocompletePrediction> predictions = [];
-  void autoCompleteSearch(String value)async{
+  void autoCompleteSearch(String value) async {
     var result = await googlePlace?.autocomplete.get(value);
-    if(result != null && result.predictions != null && mounted){
-      setState((){
+    if (result != null && result.predictions != null && mounted) {
+      setState(() {
         print(result.predictions!.first.description);
         predictions = result.predictions!;
       });
     }
   }
+
   @override
   Widget build(BuildContext context) {
     var H = MediaQuery.of(context).size.height;
@@ -191,7 +202,7 @@ class _PreferedLocationState extends State<PreferedLocation> {
                           )),
                     ),
                     Text(
-                      "  Add Your Prefered Location",
+                      "  Add Your Preferred Location",
                       style: TextStyle(
                           fontFamily: 'OpenSans-Semibold',
                           fontSize: 19,
@@ -205,23 +216,31 @@ class _PreferedLocationState extends State<PreferedLocation> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    country == null ? Row(
-                      children: [
-                        Text(" Tap here",
-                          style: TextStyle(
-                              fontFamily: 'OpenSans-Semibold',
-                              fontSize: 19,
-                              color: flyOrange2,
-                              fontWeight: FontWeight.bold),),
-                        Icon(Icons.arrow_downward_sharp,color: flyOrange2,)
-                      ],
-                    ) : Text("$subLocality,$locality,$state,$country",
-                      style: TextStyle(
-                          fontFamily: 'OpenSans-Semibold',
-                          fontSize: 15,
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold),
-                    ),
+                    country == null
+                        ? Row(
+                            children: [
+                              Text(
+                                " Tap here",
+                                style: TextStyle(
+                                    fontFamily: 'OpenSans-Semibold',
+                                    fontSize: 19,
+                                    color: flyOrange2,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Icon(
+                                Icons.arrow_downward_sharp,
+                                color: flyOrange2,
+                              )
+                            ],
+                          )
+                        : Text(
+                            "$subLocality,$locality,$state,$country",
+                            style: TextStyle(
+                                fontFamily: 'OpenSans-Semibold',
+                                fontSize: 15,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold),
+                          ),
                   ],
                 ),
                 SizedBox(
@@ -263,11 +282,11 @@ class _PreferedLocationState extends State<PreferedLocation> {
                     child: TextFormField(
                       cursorColor: flyOrange1,
                       controller: cityController,
-                      onChanged: (value){
-                        if(value.isNotEmpty){
+                      onChanged: (value) {
+                        if (value.isNotEmpty) {
                           autoCompleteSearch(value);
                           //places api
-                        }else{
+                        } else {
                           //clear out the reuslts
                         }
                       },
@@ -278,24 +297,21 @@ class _PreferedLocationState extends State<PreferedLocation> {
                           fillColor: Colors.white,
                           focusedBorder: OutlineInputBorder(
                               borderRadius:
-                              BorderRadius.all(Radius.circular(12)),
+                                  BorderRadius.all(Radius.circular(12)),
                               borderSide:
-                              BorderSide(color: Colors.transparent)),
+                                  BorderSide(color: Colors.transparent)),
                           enabledBorder: UnderlineInputBorder(
                               borderRadius:
-                              BorderRadius.all(Radius.circular(12)),
+                                  BorderRadius.all(Radius.circular(12)),
                               borderSide:
-                              BorderSide(color: Colors.transparent))),
+                                  BorderSide(color: Colors.transparent))),
                     )),
                 SizedBox(
                   height: H * 0.05,
                 ),
                 InkWell(
                   onTap: () {
-                    updateLocation(
-                        lat!,
-                        long!,
-                        cityController.text);
+                    updateLocation(lat!, long!, cityController.text);
                   },
                   child: Container(
                     width: W * 0.9,
@@ -308,19 +324,19 @@ class _PreferedLocationState extends State<PreferedLocation> {
                             end: Alignment.topRight)),
                     child: Center(
                         child: Text(
-                          "Confirm Location",
-                          style: TextStyle(
-                              fontFamily: 'OpenSans-Medium',
-                              fontSize: 16,
-                              color: Colors.white),
-                        )),
+                      "Confirm Location",
+                      style: TextStyle(
+                          fontFamily: 'OpenSans-Medium',
+                          fontSize: 16,
+                          color: Colors.white),
+                    )),
                   ),
                 ),
                 SizedBox(
                   height: H * 0.03,
                 ),
                 InkWell(
-                  onTap: (){
+                  onTap: () {
                     Get.to(HomePage());
                   },
                   child: Row(
@@ -356,18 +372,21 @@ class _PreferedLocationState extends State<PreferedLocation> {
       ),
     );
   }
-  var  H = Get.height;
-  Future updateLocation(double lat, double long,String city,) async {
+
+  var H = Get.height;
+  Future updateLocation(
+    double lat,
+    double long,
+    String city,
+  ) async {
     String? tokenAPI;
     tokenAPI = await getToken();
-    setState((){
+    setState(() {
       tokenAPI;
       print(tokenAPI);
     });
-    var token =
-        "$tokenAPI";
-    var apiURL =
-        "https://ondemandflyers.com:8087/distributor/location";
+    var token = "$tokenAPI";
+    var apiURL = "https://ondemandflyers.com:8087/distributor/location";
 
     http.Response response = await http.patch(Uri.parse(apiURL),
         headers: {
@@ -376,10 +395,15 @@ class _PreferedLocationState extends State<PreferedLocation> {
         },
         body: json.encode({
           "locations": [
-            {"latitude": lat, "longitude": long, "address": "$subLocality,$locality,$state,$country","city" : city}
+            {
+              "latitude": lat,
+              "longitude": long,
+              "address": "$subLocality,$locality,$state,$country",
+              "city": city
+            }
           ]
         }));
-    if(response.statusCode == 200){
+    if (response.statusCode == 200) {
       Get.to(HomePage());
     }
 

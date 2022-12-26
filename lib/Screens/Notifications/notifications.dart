@@ -127,7 +127,7 @@ class _NotificationsState extends State<Notifications> {
                 ) : Padding(
                   padding:  EdgeInsets.only(top: H*0.02),
                   child:Text(
-                    "Look's like their is no notifications...",
+                    "Looks like there is no notification",
                     style: TextStyle(
                         fontSize: 12,
                         fontFamily: 'OpenSans-Bold',

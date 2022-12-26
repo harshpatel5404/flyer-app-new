@@ -77,7 +77,7 @@ class _PaymentState extends State<Payment> {
                           backgroundColor: flyOrange2,
                           radius: 7,
                           child: Text(
-                            "!",
+                            "0",
                             style: TextStyle(fontSize: 11),
                           ),
                         ),

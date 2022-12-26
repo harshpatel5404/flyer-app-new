@@ -66,7 +66,6 @@ class _MyJobsState extends State<MyJobs> {
       _myJobs = jsonData['data'];
       _loading = false;
     });
-  
   }
 
   @override
@@ -123,7 +122,7 @@ class _MyJobsState extends State<MyJobs> {
                         backgroundColor: flyOrange2,
                         radius: 7,
                         child: Text(
-                          "!",
+                          "0",
                           style: TextStyle(fontSize: 11),
                         ),
                       ),
@@ -282,7 +281,7 @@ class _MyJobsState extends State<MyJobs> {
                         width: W * 0.02,
                       ),
                       Text(
-                        "Look's like their is no jobs in My jobs...",
+                        "Looks like their is no jobs in My jobs...",
                         style: TextStyle(
                             fontSize: 13,
                             fontFamily: 'OpenSans-Bold',

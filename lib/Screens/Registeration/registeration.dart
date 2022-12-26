@@ -76,7 +76,7 @@ class _RegistrationState extends State<Registration> {
   bool checkBox = false;
   final formKey = GlobalKey<FormState>();
   File? image;
-  File? file;
+  // File? file;
   File? file1;
   File? file2;
   String? downloadUrl1;
@@ -298,31 +298,6 @@ class _RegistrationState extends State<Registration> {
                   SizedBox(
                     height: H * 0.04,
                   ),
-                  // Container(
-                  //   width: W * 0.85,
-                  //   height: H * 0.08,
-                  //   decoration: BoxDecoration(
-                  //       border:
-                  //           Border.all(color: Colors.transparent, width: 0.5)),
-                  //   child: Center(
-                  //     child: TextFormField(
-                  //       controller: phoneController,
-                  //       keyboardType: TextInputType.number,
-                  //       decoration: InputDecoration(
-                  //           filled: true,
-                  //           fillColor: Colors.white,
-                  //           label: Text("Phone Number"),
-                  //           labelStyle: TextStyle(
-                  //               fontSize: 15,
-                  //               fontFamily: 'OpenSans-Regular',
-                  //               color: flyGray3),
-                  //           focusedBorder: OutlineInputBorder(
-                  //               borderSide: BorderSide(color: Colors.black)),
-                  //           enabledBorder: OutlineInputBorder(
-                  //               borderSide: BorderSide(color: flyGray4))),
-                  //     ),
-                  //   ),
-                  // ),
                   Container(
                     width: W * 0.85,
                     decoration: BoxDecoration(
@@ -844,9 +819,7 @@ class _RegistrationState extends State<Registration> {
                                 phoneController.text.isEmpty &&
                                 emailController.text.isEmpty &&
                                 passwordController.text.isEmpty &&
-                                confirmPasswordController.text.isEmpty &&
-                                image == null &&
-                                file == null) {
+                                confirmPasswordController.text.isEmpty) {
                               Get.defaultDialog(
                                   title: "Error found",
                                   titleStyle: TextStyle(
@@ -1238,7 +1211,7 @@ class _RegistrationState extends State<Registration> {
                                   content: Column(
                                     children: [
                                       Text(
-                                        "Password dose not match",
+                                        "Password does not match",
                                         style: TextStyle(
                                             fontSize: 13,
                                             fontFamily: 'OpenSans-Bold',
@@ -1380,7 +1353,7 @@ class _RegistrationState extends State<Registration> {
                                       )
                                     ],
                                   ));
-                            } else if (file1 == null) {
+                            } else if (_myState == null) {
                               Get.defaultDialog(
                                   title: "Error found",
                                   titleStyle: TextStyle(
@@ -1390,7 +1363,7 @@ class _RegistrationState extends State<Registration> {
                                   content: Column(
                                     children: [
                                       Text(
-                                        "Driving license picture must be provided",
+                                        "Please select the type of document",
                                         style: TextStyle(
                                             fontSize: 13,
                                             fontFamily: 'OpenSans-Bold',
@@ -1456,7 +1429,7 @@ class _RegistrationState extends State<Registration> {
                                       )
                                     ],
                                   ));
-                            } else if (_myState == null) {
+                            } else if (file1 == null || file2 == null) {
                               Get.defaultDialog(
                                   title: "Error found",
                                   titleStyle: TextStyle(
@@ -1466,7 +1439,7 @@ class _RegistrationState extends State<Registration> {
                                   content: Column(
                                     children: [
                                       Text(
-                                        "Please select the type of document",
+                                        "Document picture is required",
                                         style: TextStyle(
                                             fontSize: 13,
                                             fontFamily: 'OpenSans-Bold',
@@ -1591,31 +1564,6 @@ class _RegistrationState extends State<Registration> {
           ),
         ),
       ),
-    );
-  }
-
-  Row buildUploadNoDotted(double H) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-            height: H * 0.025,
-            child: Padding(
-              padding: EdgeInsets.only(right: Get.width * 0.02),
-              child: Image.asset("assets/images/upload_dl.png"),
-            )),
-        Container(
-          width: W * 0.55,
-          child: Center(
-            child: Text(
-              basename(file!.path),
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                  fontSize: 13, fontFamily: 'OpenSans-Bold', color: flyBlack),
-            ),
-          ),
-        )
-      ],
     );
   }
 
@@ -2017,81 +1965,51 @@ class _RegistrationState extends State<Registration> {
     }
   }
 
-  Future uploadDisplayPicture(
-      fullName, email, password, confirmPassword, phoneNumber) async {
-    // print('file ${drivingLicense.path}');
-    // print('file ${displayPicture.path}');
-    var stream = http.ByteStream(image!.openRead());
-    stream.cast();
-    var length = await image!.length();
+  // Future uploadDisplayPicture(
+  //     fullName, email, password, confirmPassword, phoneNumber) async {
+  //   // print('file ${drivingLicense.path}');
+  //   // print('file ${displayPicture.path}');
+  //   var stream = http.ByteStream(image!.openRead());
+  //   stream.cast();
+  //   var length = await image!.length();
 
-    var request = http.MultipartRequest(
-        'POST',
-        Uri.parse(
-          "https://ondemandflyers.com:8087/distributor/signup",
-        ));
-    String value1 = '';
-    request.fields.addAll({
-      "full_name": fullName,
-      "email": email,
-      "password": password,
-      "confirm_password": confirmPassword,
-      "phone_number": phoneNumber,
-    });
-    var multiPart = http.MultipartFile(
-      'display_picture',
-      stream,
-      length,
-      filename: image!.path,
-    );
-    request.files.add(multiPart);
-    var multiPart2 = http.MultipartFile(
-      'driving_license',
-      stream,
-      length,
-      filename: file!.path,
-    );
-    request.files.add(multiPart2);
-    var response = await request.send();
-    if (response.statusCode == 200) {
-      print('Image Uploaded');
-      print('urlofpost = ${request.fields}');
-    } else {
-      print(response.statusCode);
-      print('fail');
-      print(image!.path);
-    }
-
-    // request.files.add(http.MultipartFile(
-    //     'display_picture', displayPicture.readAsBytes().asStream(), displayPicture.lengthSync(),
-    //     filename: basename(displayPicture.path)));
-    // request.files.add(http.MultipartFile(
-    //     'driving_license', drivingLicense.readAsBytes().asStream(), drivingLicense.lengthSync(),
-    //     filename: basename(drivingLicense.path)));
-
-    // await request.send().then((response) async {
-    //
-    //   print('response = ${response}');
-    //
-    //   if (response.statusCode == 200) {
-    //     response.stream
-    //         .transform(utf8.decoder)
-    //         .listen((value) {})
-    //         .onData((data) {
-    //       value1 = data;
-    //       print('MyData : $data');
-    //     });
-    //     return value1;
-    //
-    //   } else {
-    //     value1 = "Error";
-    //     print('MyData : ${response.statusCode} }');
-    //
-    //     return value1;
-    //   }
-    // });
-    // return value1;
-  }
+  //   var request = http.MultipartRequest(
+  //       'POST',
+  //       Uri.parse(
+  //         "https://ondemandflyers.com:8087/distributor/signup",
+  //       ));
+  //   String value1 = '';
+  //   request.fields.addAll({
+  //     "full_name": fullName,
+  //     "email": email,
+  //     "password": password,
+  //     "confirm_password": confirmPassword,
+  //     "phone_number": phoneNumber,
+  //   });
+  //   var multiPart = http.MultipartFile(
+  //     'display_picture',
+  //     stream,
+  //     length,
+  //     filename: image!.path,
+  //   );
+  //   request.files.add(multiPart);
+  //   var multiPart2 = http.MultipartFile(
+  //     'driving_license',
+  //     stream,
+  //     length,
+  //     filename: file!.path,
+  //   );
+  //   request.files.add(multiPart2);
+  //   var response = await request.send();
+  //   if (response.statusCode == 200) {
+  //     print('Image Uploaded');
+  //     print('urlofpost = ${request.fields}');
+  //   } else {
+  //     print(response.statusCode);
+  //     print('fail');
+  //     print(image!.path);
+  //   }
+  // }
 
   Future<void> uploadImage() async {
     var stream = http.ByteStream(image!.openRead());
@@ -2143,28 +2061,28 @@ class _RegistrationState extends State<Registration> {
     }
   }
 
-  Future uploadFile() async {
-    String postId = DateTime.now().millisecondsSinceEpoch.toString();
-    Reference reference = FirebaseStorage.instance
-        .ref()
-        .child('driving_license')
-        .child('post_$postId.jpg');
-    await reference.putFile(file!);
-    downloadUrl1 = await reference.getDownloadURL();
-    return downloadUrl1;
-  }
+  // Future uploadFile() async {
+  //   String postId = DateTime.now().millisecondsSinceEpoch.toString();
+  //   Reference reference = FirebaseStorage.instance
+  //       .ref()
+  //       .child('driving_license')
+  //       .child('post_$postId.jpg');
+  //   await reference.putFile(file!);
+  //   downloadUrl1 = await reference.getDownloadURL();
+  //   return downloadUrl1;
+  // }
 
-  Future selectFile() async {
-    final result = await FilePicker.platform.pickFiles(
-        allowMultiple: false,
-        type: FileType.custom,
-        allowedExtensions: ['pdf']);
-    if (result == null) return;
-    final path = result.files.single.path!;
-    setState(() {
-      file = File(path);
-    });
-  }
+  // Future selectFile() async {
+  //   final result = await FilePicker.platform.pickFiles(
+  //       allowMultiple: false,
+  //       type: FileType.custom,
+  //       allowedExtensions: ['pdf']);
+  //   if (result == null) return;
+  //   final path = result.files.single.path!;
+  //   setState(() {
+  //     file = File(path);
+  //   });
+  // }
 
   Future pickImage(ImageSource source) async {
     try {
@@ -2181,22 +2099,22 @@ class _RegistrationState extends State<Registration> {
     }
   }
 
-  Future pickImage2(ImageSource source) async {
-    try {
-      final file = await ImagePicker().pickImage(source: source);
-      if (file == null) return;
-      final imageTemporary = File(file.path);
-      setState(() {
-        print(imageTemporary);
-        this.file = imageTemporary;
-        Get.back();
-        imageMime = lookupMimeType(file.path);
-        print(imageMime);
-      });
-    } on PlatformException catch (e) {
-      print("Failed to pick image:$e");
-    }
-  }
+  // Future pickImage2(ImageSource source) async {
+  //   try {
+  //     final file = await ImagePicker().pickImage(source: source);
+  //     if (file == null) return;
+  //     final imageTemporary = File(file.path);
+  //     setState(() {
+  //       print(imageTemporary);
+  //       this.file = imageTemporary;
+  //       Get.back();
+  //       imageMime = lookupMimeType(file.path);
+  //       print(imageMime);
+  //     });
+  //   } on PlatformException catch (e) {
+  //     print("Failed to pick image:$e");
+  //   }
+  // }
 
   Future pickImage3(ImageSource source) async {
     try {
@@ -2232,16 +2150,16 @@ class _RegistrationState extends State<Registration> {
     }
   }
 
-  Future uploadPicture(BuildContext context) async {
-    String postId = DateTime.now().millisecondsSinceEpoch.toString();
-    Reference reference = FirebaseStorage.instance
-        .ref()
-        .child('images')
-        .child('post_$postId.jpg');
-    await reference.putFile(file!);
-    downloadUrl2 = await reference.getDownloadURL();
-    return downloadUrl2;
-  }
+  // Future uploadPicture(BuildContext context) async {
+  //   String postId = DateTime.now().millisecondsSinceEpoch.toString();
+  //   Reference reference = FirebaseStorage.instance
+  //       .ref()
+  //       .child('images')
+  //       .child('post_$postId.jpg');
+  //   await reference.putFile(file!);
+  //   downloadUrl2 = await reference.getDownloadURL();
+  //   return downloadUrl2;
+  // }
 }
 
 class FirebaseApi {

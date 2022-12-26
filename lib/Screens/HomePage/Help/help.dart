@@ -111,7 +111,7 @@ class _HelpState extends State<Help> {
                         backgroundColor: flyOrange2,
                         radius: 7,
                         child: Text(
-                          "!",
+                          "0",
                           style: TextStyle(fontSize: 11),
                         ),
                       ),
@@ -124,176 +124,180 @@ class _HelpState extends State<Help> {
         ],
       ),
       body: Obx(
-            () => chatController.messageslist.isNotEmpty
+        () => chatController.messageslist.isNotEmpty
             ? Stack(
-          children: [
-            Padding(
-              padding: EdgeInsets.only(bottom: H * 0.05),
-              child: ListView.builder(
-                controller: scrollController,
-                itemCount: chatController.messageslist.length,
-                shrinkWrap: true,
-                padding: EdgeInsets.only(top: 10, bottom: 10),
-                itemBuilder: (context, index) {
-                  return Column(
-                    children: [
-                      Container(
-                        padding: EdgeInsets.only(
-                            left: 14, right: 14, top: 10, bottom: 10),
-                        child: Align(
-                          alignment: (chatController
-                              .messageslist[index].messageType !=
-                              chatController.id.value
-                              ? Alignment.topLeft
-                              : Alignment.topRight),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: (chatController.messageslist[index]
-                                  .messageType !=
-                                  chatController.id.value
-                                  ? Color.fromARGB(255, 197, 197, 197)
-                                  : flyOrange1),
-                            ),
-                            padding: EdgeInsets.all(16),
-                            child: Text(
-                              chatController
-                                  .messageslist[index].messageContent,
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  fontFamily: "OpenSans-Regular",
-                                  color: chatController
-                                      .messageslist[index]
-                                      .messageType !=
-                                      chatController.id.value
-                                      ? Color(0xff4b4b4b)
-                                      : Colors.white,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  );
-                },
-              ),
-            ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                  height: H * 0.069,
-                  width: W,
-                  decoration: BoxDecoration(
-                      border: Border.all(
-                          color: Colors.transparent, width: 0.5)),
-                  child: Stack(
-                    children: [
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Container(
-                          width: W,
-                          child: TextFormField(
-                            controller: msgController,
-                            decoration: InputDecoration(
-                                filled: true,
-                                fillColor: Colors.white,
-                                hintText: "Type a message",
-                                hintStyle: TextStyle(
-                                    fontSize: 15,
-                                    fontFamily: 'OpenSans-Regular',
-                                    color: flyGray3),
-                                focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.transparent)),
-                                enabledBorder: InputBorder.none),
-                          ),
-                        ),
-                      ),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: Padding(
-                          padding: EdgeInsets.only(right: W * 0.03),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              SizedBox(
-                                width: W * 0.03,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(bottom: H * 0.05),
+                    child: ListView.builder(
+                      controller: scrollController,
+                      itemCount: chatController.messageslist.length,
+                      shrinkWrap: true,
+                      padding: EdgeInsets.only(top: 10, bottom: 10),
+                      itemBuilder: (context, index) {
+                        return Column(
+                          children: [
+                            Container(
+                              padding: EdgeInsets.only(
+                                  left: 14, right: 14, top: 10, bottom: 10),
+                              child: Align(
+                                alignment: (chatController
+                                            .messageslist[index].messageType !=
+                                        chatController.id.value
+                                    ? Alignment.topLeft
+                                    : Alignment.topRight),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: (chatController.messageslist[index]
+                                                .messageType !=
+                                            chatController.id.value
+                                        ? Color.fromARGB(255, 197, 197, 197)
+                                        : flyOrange1),
+                                  ),
+                                  padding: EdgeInsets.all(16),
+                                  child: Text(
+                                    chatController
+                                        .messageslist[index].messageContent,
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        fontFamily: "OpenSans-Regular",
+                                        color: chatController
+                                                    .messageslist[index]
+                                                    .messageType !=
+                                                chatController.id.value
+                                            ? Color(0xff4b4b4b)
+                                            : Colors.white,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ),
                               ),
-                              InkWell(
-                                onTap: () async {
-                                  userName = await getName();
-                                  print(userName);
-                                  if (msgController.text != "") {
-                                    // setId("62d7ef37874cc852d6f8536e");
-                                    // setName("harshad");
-                                    var userId = await getId();
-                                    var name = await getName();
-                                    print(name);
-                                    // NotificationService().showNotification(
-                                    //     0, "test", "body", "payload");
-                                    print(userId);
-                                    print(msgController.text);
-                                    socket!.emit('message', {
-                                      "message": msgController.text,
-                                      "userId": userId,
-                                      "username": name,
-                                      "roomName": userId
-                                    });
-                                    functionForSocket({
-                                      "type": "Chat",
-                                      "title": "'You have one new message from $userName'",
-                                      "description": "$userName sent you ${msgController.text}",
-                                    });
-
-                                    scrollController.animateTo(
-                                        scrollController
-                                            .position.maxScrollExtent,
-                                        duration: const Duration(
-                                            milliseconds: 500),
-                                        curve: Curves.easeOut);
-
-                                    AllApi().setChatMessage(
-                                        msgController.text);
-                                    chatController.messageslist.add(
-                                        ChatMessage(
-                                            messageContent:
-                                            msgController.text,
-                                            messageType:
-                                            userId.toString()));
-                                    msgController.clear();
-                                  } else {
-                                    print("write");
-                                  }
-                                },
-                                child: CircleAvatar(
-                                    radius: 21,
-                                    backgroundColor: flyOrange3,
-                                    child: Image.asset(
-                                        "assets/images/send.png")),
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Container(
+                        height: H * 0.069,
+                        width: W,
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                                color: Colors.transparent, width: 0.5)),
+                        child: Stack(
+                          children: [
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Container(
+                                width: W,
+                                child: TextFormField(
+                                  controller: msgController,
+                                  decoration: InputDecoration(
+                                      filled: true,
+                                      fillColor: Colors.white,
+                                      hintText: "Type a message",
+                                      hintStyle: TextStyle(
+                                          fontSize: 15,
+                                          fontFamily: 'OpenSans-Regular',
+                                          color: flyGray3),
+                                      focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: Colors.transparent)),
+                                      enabledBorder: InputBorder.none),
+                                ),
                               ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  )),
-            ),
-          ],
-        )
+                            ),
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: Padding(
+                                padding: EdgeInsets.only(right: W * 0.03),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    SizedBox(
+                                      width: W * 0.03,
+                                    ),
+                                    InkWell(
+                                      onTap: () async {
+                                        userName = await getName();
+                                        print(userName);
+                                        if (msgController.text != "") {
+                                          // setId("62d7ef37874cc852d6f8536e");
+                                          // setName("harshad");
+                                          var userId = await getId();
+                                          var name = await getName();
+                                          print(name);
+                                          // NotificationService().showNotification(
+                                          //     0, "test", "body", "payload");
+                                          print(userId);
+                                          print(msgController.text);
+                                          socket!.emit('message', {
+                                            "message": msgController.text,
+                                            "userId": userId,
+                                            "username": name,
+                                            "roomName": userId
+                                          });
+                                          functionForSocket({
+                                            "type": "Chat",
+                                            "title":
+                                                "'You have one new message from $userName'",
+                                            "description":
+                                                "$userName sent you ${msgController.text}",
+                                          });
+
+                                          scrollController.animateTo(
+                                              scrollController
+                                                  .position.maxScrollExtent,
+                                              duration: const Duration(
+                                                  milliseconds: 500),
+                                              curve: Curves.easeOut);
+
+                                          AllApi().setChatMessage(
+                                              msgController.text);
+                                          chatController.messageslist.add(
+                                              ChatMessage(
+                                                  messageContent:
+                                                      msgController.text,
+                                                  messageType:
+                                                      userId.toString()));
+                                          msgController.clear();
+                                        } else {
+                                          print("write");
+                                        }
+                                      },
+                                      child: CircleAvatar(
+                                          radius: 21,
+                                          backgroundColor: flyOrange3,
+                                          child: Image.asset(
+                                              "assets/images/send.png")),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        )),
+                  ),
+                ],
+              )
             : chatController.chatmsg.value == ""
-            ? Center(
-          child: CircularProgressIndicator(
-            color: flyOrange1,
-          ),
-        )
-            : Text(chatController.chatmsg.value),
+                ? Center(
+                    child: CircularProgressIndicator(
+                      color: flyOrange1,
+                    ),
+                  )
+                : Text(chatController.chatmsg.value),
       ),
     );
   }
 }
-void functionForSocket(Object data){
+
+void functionForSocket(Object data) {
   socket!.emit('notification', {data});
 }
+
 class ChatMessage {
   String messageContent;
   String messageType;

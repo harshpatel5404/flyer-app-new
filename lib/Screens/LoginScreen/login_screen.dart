@@ -18,6 +18,7 @@ import 'package:flyerapp/main.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
+import 'dart:io' show Platform;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:the_apple_sign_in/the_apple_sign_in.dart';
 import '../../Widgets/progress_indicator.dart';
@@ -518,27 +519,28 @@ class _LoginScreenState extends State<LoginScreen> {
                     SizedBox(
                       width: W * 0.05,
                     ),
-                    InkWell(
-                      onTap: () async {
-                        await signinApple();
-                      },
-                      child: CircleAvatar(
-                        radius: 31,
-                        backgroundColor: Colors.grey,
+                    if (Platform.isIOS)
+                      InkWell(
+                        onTap: () async {
+                          await signinApple();
+                        },
                         child: CircleAvatar(
-                          radius: 30,
-                          foregroundColor: Colors.black,
-                          backgroundColor: Colors.white,
-                          child: Container(
-                            height: H * 0.04,
-                            decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    image:
-                                        AssetImage("assets/images/apple.png"))),
+                          radius: 31,
+                          backgroundColor: Colors.grey,
+                          child: CircleAvatar(
+                            radius: 30,
+                            foregroundColor: Colors.black,
+                            backgroundColor: Colors.white,
+                            child: Container(
+                              height: H * 0.04,
+                              decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      image: AssetImage(
+                                          "assets/images/apple.png"))),
+                            ),
                           ),
                         ),
                       ),
-                    ),
                   ],
                 ),
               ],

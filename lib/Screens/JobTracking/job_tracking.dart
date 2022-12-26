@@ -46,7 +46,7 @@ class _JobTrackingState extends State<JobTracking> {
   double? endLong;
   Timer? timer;
   Set<Marker>? _markers;
-  Future locatePosition()async {
+  Future locatePosition() async {
     idFromApi = await getId();
     userName = await getName();
     iconUri = await getDisplayPicture();
@@ -56,14 +56,14 @@ class _JobTrackingState extends State<JobTracking> {
     lat = position.latitude;
     long = position.longitude;
     var data = ({
-      "distributorId" : idFromApi,
-      "distributorName" : userName,
+      "distributorId": idFromApi,
+      "distributorName": userName,
       "lat": lat,
       "lng": long,
-      "iconUri" : iconUri
+      "iconUri": iconUri
       // "time" : DateTime.now()
     });
-    setState((){
+    setState(() {
       print(userName);
       print(lat);
       print(long);
@@ -73,6 +73,7 @@ class _JobTrackingState extends State<JobTracking> {
     });
     socket!.emit('liveLocationUpdate', {data});
   }
+
   Future getUserData() async {
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
@@ -115,13 +116,15 @@ class _JobTrackingState extends State<JobTracking> {
 
   late CameraPosition _initialPosition;
   @override
-  void dispose(){
+  void dispose() {
     super.dispose();
     timer = Timer.periodic(Duration(seconds: 2), (Timer t) => getUserData());
   }
+
   @override
   void initState() {
-    timer = Timer.periodic(Duration(seconds: 10), (Timer t) => locatePosition());
+    timer =
+        Timer.periodic(Duration(seconds: 10), (Timer t) => locatePosition());
     timer = Timer.periodic(Duration(seconds: 2), (Timer t) => getUserData());
     setCustomMarkerIcon();
     super.initState();
@@ -171,7 +174,7 @@ class _JobTrackingState extends State<JobTracking> {
                           backgroundColor: flyOrange2,
                           radius: 7,
                           child: Text(
-                            "!",
+                            "0",
                             style: TextStyle(fontSize: 11),
                           ),
                         ),
@@ -310,7 +313,6 @@ class _JobTrackingState extends State<JobTracking> {
             polylineId: PolylineId('polyline'),
             color: Colors.red,
             points: polylineCoordinates));
-            
       });
     }
   }
@@ -320,8 +322,7 @@ class _JobTrackingState extends State<JobTracking> {
     jobId = await getJobId();
     userName = await getName();
     var jobTitle = await getJobTitle();
-    var baseurl =
-        "https://ondemandflyers.com:8087/distributor/completeJob";
+    var baseurl = "https://ondemandflyers.com:8087/distributor/completeJob";
     var jobIdForApi = jobId;
     var token = "$tokenApi";
     final response =

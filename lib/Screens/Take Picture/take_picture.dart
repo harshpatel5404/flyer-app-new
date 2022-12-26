@@ -38,68 +38,78 @@ class _TakePictureState extends State<TakePicture> {
     var W = MediaQuery.of(context).size.width;
     bool serviceEnabled;
     LocationPermission permission;
-    try{
+    try {
       serviceEnabled = await Geolocator.isLocationServiceEnabled();
-      if(!serviceEnabled){
-        return  Get.defaultDialog(
+      if (!serviceEnabled) {
+        return Get.defaultDialog(
             title: "",
             titleStyle: TextStyle(
-                fontSize: 15,
-                fontFamily: 'OpenSans-Bold',
-                color: flyBlack2
-            ),
+                fontSize: 15, fontFamily: 'OpenSans-Bold', color: flyBlack2),
             content: Column(
               children: [
-                Text("Please turn on your device location!",style:TextStyle(
-                    fontSize: 13,
-                    fontFamily: 'OpenSans-Bold',
-                    color: flyBlack2
-                ),),
-                SizedBox(height: H*0.02,),
+                Text(
+                  "Please turn on your device location!",
+                  style: TextStyle(
+                      fontSize: 13,
+                      fontFamily: 'OpenSans-Bold',
+                      color: flyBlack2),
+                ),
+                SizedBox(
+                  height: H * 0.02,
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     InkWell(
-                      onTap: (){
+                      onTap: () {
                         Get.back();
                       },
                       child: Container(
-                          height: H*0.05,
-                          width: W*0.2,
+                          height: H * 0.05,
+                          width: W * 0.2,
                           decoration: BoxDecoration(
                               color: flyOrange2,
-                              borderRadius: BorderRadius.all(Radius.circular(8))
-                          ),
-                          child: Center(child: Text("Ok",style: TextStyle(fontSize: 13,
-                              fontFamily: 'OpenSans-Bold',
-                              color: Colors.white),))
-                      ),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(8))),
+                          child: Center(
+                              child: Text(
+                            "Ok",
+                            style: TextStyle(
+                                fontSize: 13,
+                                fontFamily: 'OpenSans-Bold',
+                                color: Colors.white),
+                          ))),
                     ),
-                    SizedBox(width: W*0.05,),
+                    SizedBox(
+                      width: W * 0.05,
+                    ),
                     InkWell(
-                      onTap: (){
+                      onTap: () {
                         Get.back();
                       },
                       child: Container(
-                          height: H*0.05,
-                          width: W*0.2,
+                          height: H * 0.05,
+                          width: W * 0.2,
                           decoration: BoxDecoration(
                               color: flyGray3,
-                              borderRadius: BorderRadius.all(Radius.circular(8))
-                          ),
-                          child: Center(child: Text("cancel",style: TextStyle(fontSize: 13,
-                              fontFamily: 'OpenSans-Bold',
-                              color: Colors.white),))
-                      ),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(8))),
+                          child: Center(
+                              child: Text(
+                            "cancel",
+                            style: TextStyle(
+                                fontSize: 13,
+                                fontFamily: 'OpenSans-Bold',
+                                color: Colors.white),
+                          ))),
                     ),
                   ],
                 )
               ],
-            )
-        );
+            ));
       }
       permission = await Geolocator.checkPermission();
-      if(permission == LocationPermission.denied){
+      if (permission == LocationPermission.denied) {
         permission = await Geolocator.requestPermission();
         Position position = await Geolocator.getCurrentPosition(
             desiredAccuracy: LocationAccuracy.medium);
@@ -112,17 +122,16 @@ class _TakePictureState extends State<TakePicture> {
           "lat": lat,
           "lng": long,
         });
-        setState((){});
+        setState(() {});
         List<Placemark> placemark = await placemarkFromCoordinates(lat!, long!);
         print(placemark[0].toString());
-        setState((){
+        setState(() {
           subLocality = placemark[0].subLocality;
           locality = placemark[0].locality;
           state = placemark[0].administrativeArea;
           country = placemark[0].country;
         });
-      }
-      else if(permission == LocationPermission.whileInUse){
+      } else if (permission == LocationPermission.whileInUse) {
         Position position = await Geolocator.getCurrentPosition(
             desiredAccuracy: LocationAccuracy.medium);
         currentPosition = position;
@@ -134,10 +143,10 @@ class _TakePictureState extends State<TakePicture> {
           "lat": lat,
           "lng": long,
         });
-        setState((){});
+        setState(() {});
         List<Placemark> placemark = await placemarkFromCoordinates(lat!, long!);
         print(placemark[0].toString());
-        setState((){
+        setState(() {
           subLocality = placemark[0].subLocality;
           locality = placemark[0].locality;
           state = placemark[0].administrativeArea;
@@ -147,27 +156,29 @@ class _TakePictureState extends State<TakePicture> {
     } catch (e) {
       print(e.toString());
       Get.snackbar("Error", e.toString());
-
     }
   }
+
   File? image;
   late GooglePlace? googlePlace;
   @override
-  void initState(){
+  void initState() {
     super.initState();
     String apiKey = 'AIzaSyBMrf4s0FyFlJyzJ6bVNizbhJmKlC-p3h4';
     googlePlace = GooglePlace(apiKey);
   }
+
   List<AutocompletePrediction> predictions = [];
-  void autoCompleteSearch(String value)async{
+  void autoCompleteSearch(String value) async {
     var result = await googlePlace?.autocomplete.get(value);
-    if(result != null && result.predictions != null && mounted){
-      setState((){
+    if (result != null && result.predictions != null && mounted) {
+      setState(() {
         print(result.predictions!.first.description);
         predictions = result.predictions!;
       });
     }
   }
+
   TextEditingController cityController = TextEditingController();
   TextEditingController numOfFlyersDistributed = TextEditingController();
   TextEditingController numOfDoorHangersDistributed = TextEditingController();
@@ -181,30 +192,35 @@ class _TakePictureState extends State<TakePicture> {
           child: Center(
             child: Column(
               children: [
-                SizedBox(height: H*0.04,),
+                SizedBox(
+                  height: H * 0.04,
+                ),
                 Padding(
-                  padding:  EdgeInsets.only(left: W*0.05),
+                  padding: EdgeInsets.only(left: W * 0.05),
                   child: Row(
                     children: [
                       InkWell(
-                        onTap: (){
+                        onTap: () {
                           Get.back();
                         },
                         child: Container(
-                            height: H*0.028,
-                            width: W*0.07,
-                            child: Image.asset("assets/images/back_arrow.png",)),
+                            height: H * 0.028,
+                            width: W * 0.07,
+                            child: Image.asset(
+                              "assets/images/back_arrow.png",
+                            )),
                       ),
-                      Text("  Take Picture",
+                      Text(
+                        "  Take Picture",
                         style: TextStyle(
-                            fontFamily: 'OpenSans-Medium',
-                            fontSize: 24
-                        ),
+                            fontFamily: 'OpenSans-Medium', fontSize: 24),
                       )
                     ],
                   ),
                 ),
-                SizedBox(height: H*0.03,),
+                SizedBox(
+                  height: H * 0.03,
+                ),
                 Stack(
                   children: [
                     Align(
@@ -216,16 +232,18 @@ class _TakePictureState extends State<TakePicture> {
                           radius: 102,
                           foregroundColor: Colors.black,
                           backgroundColor: Colors.white,
-                          backgroundImage: image != null ? FileImage(image!)  as ImageProvider : AssetImage("assets/images/door_hanger.png"),
+                          backgroundImage: image != null
+                              ? FileImage(image!) as ImageProvider
+                              : AssetImage("assets/images/door_hanger.png"),
                         ),
                       ),
                     ),
                     InkWell(
-                      onTap: (){
-                        pickImageMethod(ImageSource.camera,90);
+                      onTap: () {
+                        pickImageMethod(ImageSource.camera, 90);
                       },
                       child: Padding(
-                        padding:  EdgeInsets.only(top: H*0.2,left: W*0.4),
+                        padding: EdgeInsets.only(top: H * 0.2, left: W * 0.4),
                         child: Align(
                           alignment: Alignment.center,
                           child: CircleAvatar(
@@ -233,7 +251,8 @@ class _TakePictureState extends State<TakePicture> {
                             child: CircleAvatar(
                               radius: 20,
                               backgroundColor: flyBackground,
-                              backgroundImage: AssetImage("assets/images/add_image.png"),
+                              backgroundImage:
+                                  AssetImage("assets/images/add_image.png"),
                             ),
                           ),
                         ),
@@ -247,23 +266,31 @@ class _TakePictureState extends State<TakePicture> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    country == null ? Row(
-                      children: [
-                        Text(" Tap here",
-                          style: TextStyle(
-                              fontFamily: 'OpenSans-Semibold',
-                              fontSize: 19,
-                              color: flyOrange2,
-                              fontWeight: FontWeight.bold),),
-                        Icon(Icons.arrow_downward_sharp,color: flyOrange2,)
-                      ],
-                    ) : Text("$subLocality,$locality,$state,$country",
-                      style: TextStyle(
-                          fontFamily: 'OpenSans-Semibold',
-                          fontSize: 15,
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold),
-                    ),
+                    country == null
+                        ? Row(
+                            children: [
+                              Text(
+                                " Tap here",
+                                style: TextStyle(
+                                    fontFamily: 'OpenSans-Semibold',
+                                    fontSize: 19,
+                                    color: flyOrange2,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Icon(
+                                Icons.arrow_downward_sharp,
+                                color: flyOrange2,
+                              )
+                            ],
+                          )
+                        : Text(
+                            "$subLocality,$locality,$state,$country",
+                            style: TextStyle(
+                                fontFamily: 'OpenSans-Semibold',
+                                fontSize: 15,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold),
+                          ),
                   ],
                 ),
                 SizedBox(
@@ -294,8 +321,8 @@ class _TakePictureState extends State<TakePicture> {
                     width: W * 0.9,
                     height: H * 0.07,
                     decoration: BoxDecoration(
-                        border: Border.all(color: Colors.transparent,width: 0.5)
-                    ),
+                        border:
+                            Border.all(color: Colors.transparent, width: 0.5)),
                     child: Center(
                       child: TextFormField(
                         controller: cityController,
@@ -306,15 +333,11 @@ class _TakePictureState extends State<TakePicture> {
                             labelStyle: TextStyle(
                                 fontSize: 15,
                                 fontFamily: 'OpenSans-Regular',
-                                color: flyGray3
-                            ),
+                                color: flyGray3),
                             focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.black)
-                            ),
+                                borderSide: BorderSide(color: Colors.black)),
                             enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: flyGray4)
-                            )
-                        ),
+                                borderSide: BorderSide(color: flyGray4))),
                       ),
                     )),
                 SizedBox(
@@ -324,8 +347,8 @@ class _TakePictureState extends State<TakePicture> {
                     width: W * 0.9,
                     height: H * 0.07,
                     decoration: BoxDecoration(
-                        border: Border.all(color: Colors.transparent,width: 0.5)
-                    ),
+                        border:
+                            Border.all(color: Colors.transparent, width: 0.5)),
                     child: Center(
                       child: TextFormField(
                         controller: numOfFlyersDistributed,
@@ -337,15 +360,11 @@ class _TakePictureState extends State<TakePicture> {
                             labelStyle: TextStyle(
                                 fontSize: 15,
                                 fontFamily: 'OpenSans-Regular',
-                                color: flyGray3
-                            ),
+                                color: flyGray3),
                             focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.black)
-                            ),
+                                borderSide: BorderSide(color: Colors.black)),
                             enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: flyGray4)
-                            )
-                        ),
+                                borderSide: BorderSide(color: flyGray4))),
                       ),
                     )),
                 SizedBox(
@@ -355,8 +374,8 @@ class _TakePictureState extends State<TakePicture> {
                     width: W * 0.9,
                     height: H * 0.07,
                     decoration: BoxDecoration(
-                        border: Border.all(color: Colors.transparent,width: 0.5)
-                    ),
+                        border:
+                            Border.all(color: Colors.transparent, width: 0.5)),
                     child: Center(
                       child: TextFormField(
                         keyboardType: TextInputType.number,
@@ -368,25 +387,21 @@ class _TakePictureState extends State<TakePicture> {
                             labelStyle: TextStyle(
                                 fontSize: 15,
                                 fontFamily: 'OpenSans-Regular',
-                                color: flyGray3
-                            ),
+                                color: flyGray3),
                             focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.black)
-                            ),
+                                borderSide: BorderSide(color: Colors.black)),
                             enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: flyGray4)
-                            )
-                        ),
+                                borderSide: BorderSide(color: flyGray4))),
                       ),
                     )),
                 Padding(
-                  padding:  EdgeInsets.only(left: W*0.05 ,top: H*0.09),
+                  padding: EdgeInsets.only(left: W * 0.05, top: H * 0.09),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       InkWell(
-                        onTap: (){
-                          if(image == null){
+                        onTap: () {
+                          if (image == null) {
                             Get.defaultDialog(
                                 title: "",
                                 titleStyle: TextStyle(
@@ -407,7 +422,7 @@ class _TakePictureState extends State<TakePicture> {
                                     ),
                                     Row(
                                       mainAxisAlignment:
-                                      MainAxisAlignment.center,
+                                          MainAxisAlignment.center,
                                       children: [
                                         InkWell(
                                           onTap: () {
@@ -419,18 +434,16 @@ class _TakePictureState extends State<TakePicture> {
                                               decoration: BoxDecoration(
                                                   color: flyOrange2,
                                                   borderRadius:
-                                                  BorderRadius.all(
-                                                      Radius.circular(
-                                                          8))),
+                                                      BorderRadius.all(
+                                                          Radius.circular(8))),
                                               child: Center(
                                                   child: Text(
-                                                    "Ok",
-                                                    style: TextStyle(
-                                                        fontSize: 13,
-                                                        fontFamily:
-                                                        'OpenSans-Bold',
-                                                        color: Colors.white),
-                                                  ))),
+                                                "Ok",
+                                                style: TextStyle(
+                                                    fontSize: 13,
+                                                    fontFamily: 'OpenSans-Bold',
+                                                    color: Colors.white),
+                                              ))),
                                         ),
                                         SizedBox(
                                           width: W * 0.05,
@@ -445,24 +458,22 @@ class _TakePictureState extends State<TakePicture> {
                                               decoration: BoxDecoration(
                                                   color: flyGray3,
                                                   borderRadius:
-                                                  BorderRadius.all(
-                                                      Radius.circular(
-                                                          8))),
+                                                      BorderRadius.all(
+                                                          Radius.circular(8))),
                                               child: Center(
                                                   child: Text(
-                                                    "cancel",
-                                                    style: TextStyle(
-                                                        fontSize: 13,
-                                                        fontFamily:
-                                                        'OpenSans-Bold',
-                                                        color: Colors.white),
-                                                  ))),
+                                                "cancel",
+                                                style: TextStyle(
+                                                    fontSize: 13,
+                                                    fontFamily: 'OpenSans-Bold',
+                                                    color: Colors.white),
+                                              ))),
                                         ),
                                       ],
                                     )
                                   ],
                                 ));
-                          }else if(cityController.text.isEmpty){
+                          } else if (cityController.text.isEmpty) {
                             Get.defaultDialog(
                                 title: "",
                                 titleStyle: TextStyle(
@@ -483,7 +494,7 @@ class _TakePictureState extends State<TakePicture> {
                                     ),
                                     Row(
                                       mainAxisAlignment:
-                                      MainAxisAlignment.center,
+                                          MainAxisAlignment.center,
                                       children: [
                                         InkWell(
                                           onTap: () {
@@ -495,18 +506,16 @@ class _TakePictureState extends State<TakePicture> {
                                               decoration: BoxDecoration(
                                                   color: flyOrange2,
                                                   borderRadius:
-                                                  BorderRadius.all(
-                                                      Radius.circular(
-                                                          8))),
+                                                      BorderRadius.all(
+                                                          Radius.circular(8))),
                                               child: Center(
                                                   child: Text(
-                                                    "Ok",
-                                                    style: TextStyle(
-                                                        fontSize: 13,
-                                                        fontFamily:
-                                                        'OpenSans-Bold',
-                                                        color: Colors.white),
-                                                  ))),
+                                                "Ok",
+                                                style: TextStyle(
+                                                    fontSize: 13,
+                                                    fontFamily: 'OpenSans-Bold',
+                                                    color: Colors.white),
+                                              ))),
                                         ),
                                         SizedBox(
                                           width: W * 0.05,
@@ -521,24 +530,22 @@ class _TakePictureState extends State<TakePicture> {
                                               decoration: BoxDecoration(
                                                   color: flyGray3,
                                                   borderRadius:
-                                                  BorderRadius.all(
-                                                      Radius.circular(
-                                                          8))),
+                                                      BorderRadius.all(
+                                                          Radius.circular(8))),
                                               child: Center(
                                                   child: Text(
-                                                    "cancel",
-                                                    style: TextStyle(
-                                                        fontSize: 13,
-                                                        fontFamily:
-                                                        'OpenSans-Bold',
-                                                        color: Colors.white),
-                                                  ))),
+                                                "cancel",
+                                                style: TextStyle(
+                                                    fontSize: 13,
+                                                    fontFamily: 'OpenSans-Bold',
+                                                    color: Colors.white),
+                                              ))),
                                         ),
                                       ],
                                     )
                                   ],
                                 ));
-                          }else if(numOfFlyersDistributed.text.isEmpty){
+                          } else if (numOfFlyersDistributed.text.isEmpty) {
                             Get.defaultDialog(
                                 title: "",
                                 titleStyle: TextStyle(
@@ -559,7 +566,7 @@ class _TakePictureState extends State<TakePicture> {
                                     ),
                                     Row(
                                       mainAxisAlignment:
-                                      MainAxisAlignment.center,
+                                          MainAxisAlignment.center,
                                       children: [
                                         InkWell(
                                           onTap: () {
@@ -571,18 +578,16 @@ class _TakePictureState extends State<TakePicture> {
                                               decoration: BoxDecoration(
                                                   color: flyOrange2,
                                                   borderRadius:
-                                                  BorderRadius.all(
-                                                      Radius.circular(
-                                                          8))),
+                                                      BorderRadius.all(
+                                                          Radius.circular(8))),
                                               child: Center(
                                                   child: Text(
-                                                    "Ok",
-                                                    style: TextStyle(
-                                                        fontSize: 13,
-                                                        fontFamily:
-                                                        'OpenSans-Bold',
-                                                        color: Colors.white),
-                                                  ))),
+                                                "Ok",
+                                                style: TextStyle(
+                                                    fontSize: 13,
+                                                    fontFamily: 'OpenSans-Bold',
+                                                    color: Colors.white),
+                                              ))),
                                         ),
                                         SizedBox(
                                           width: W * 0.05,
@@ -597,24 +602,22 @@ class _TakePictureState extends State<TakePicture> {
                                               decoration: BoxDecoration(
                                                   color: flyGray3,
                                                   borderRadius:
-                                                  BorderRadius.all(
-                                                      Radius.circular(
-                                                          8))),
+                                                      BorderRadius.all(
+                                                          Radius.circular(8))),
                                               child: Center(
                                                   child: Text(
-                                                    "cancel",
-                                                    style: TextStyle(
-                                                        fontSize: 13,
-                                                        fontFamily:
-                                                        'OpenSans-Bold',
-                                                        color: Colors.white),
-                                                  ))),
+                                                "cancel",
+                                                style: TextStyle(
+                                                    fontSize: 13,
+                                                    fontFamily: 'OpenSans-Bold',
+                                                    color: Colors.white),
+                                              ))),
                                         ),
                                       ],
                                     )
                                   ],
                                 ));
-                          }else if(numOfDoorHangersDistributed.text.isEmpty){
+                          } else if (numOfDoorHangersDistributed.text.isEmpty) {
                             Get.defaultDialog(
                                 title: "",
                                 titleStyle: TextStyle(
@@ -635,7 +638,7 @@ class _TakePictureState extends State<TakePicture> {
                                     ),
                                     Row(
                                       mainAxisAlignment:
-                                      MainAxisAlignment.center,
+                                          MainAxisAlignment.center,
                                       children: [
                                         InkWell(
                                           onTap: () {
@@ -647,18 +650,16 @@ class _TakePictureState extends State<TakePicture> {
                                               decoration: BoxDecoration(
                                                   color: flyOrange2,
                                                   borderRadius:
-                                                  BorderRadius.all(
-                                                      Radius.circular(
-                                                          8))),
+                                                      BorderRadius.all(
+                                                          Radius.circular(8))),
                                               child: Center(
                                                   child: Text(
-                                                    "Ok",
-                                                    style: TextStyle(
-                                                        fontSize: 13,
-                                                        fontFamily:
-                                                        'OpenSans-Bold',
-                                                        color: Colors.white),
-                                                  ))),
+                                                "Ok",
+                                                style: TextStyle(
+                                                    fontSize: 13,
+                                                    fontFamily: 'OpenSans-Bold',
+                                                    color: Colors.white),
+                                              ))),
                                         ),
                                         SizedBox(
                                           width: W * 0.05,
@@ -673,47 +674,44 @@ class _TakePictureState extends State<TakePicture> {
                                               decoration: BoxDecoration(
                                                   color: flyGray3,
                                                   borderRadius:
-                                                  BorderRadius.all(
-                                                      Radius.circular(
-                                                          8))),
+                                                      BorderRadius.all(
+                                                          Radius.circular(8))),
                                               child: Center(
                                                   child: Text(
-                                                    "cancel",
-                                                    style: TextStyle(
-                                                        fontSize: 13,
-                                                        fontFamily:
-                                                        'OpenSans-Bold',
-                                                        color: Colors.white),
-                                                  ))),
+                                                "cancel",
+                                                style: TextStyle(
+                                                    fontSize: 13,
+                                                    fontFamily: 'OpenSans-Bold',
+                                                    color: Colors.white),
+                                              ))),
                                         ),
                                       ],
                                     )
                                   ],
                                 ));
-                          }
-                          else{
+                          } else {
                             uploadImage();
                           }
                         },
                         child: Container(
-                          width: W*0.42,
-                          height: H*0.08,
+                          width: W * 0.42,
+                          height: H * 0.08,
                           decoration: BoxDecoration(
                             color: flyBlue1,
                             borderRadius: BorderRadius.all(Radius.circular(3)),
                           ),
-                          child: Center(child:
-                          Text("Upload Picture",
+                          child: Center(
+                              child: Text(
+                            "Upload Picture",
                             style: TextStyle(
                                 fontFamily: 'OpenSans-Bold',
                                 fontSize: 16,
-                                color: Colors.white
-                            ),
-                          )
-                          ),
+                                color: Colors.white),
+                          )),
                         ),
                       ),
-                    ],),
+                    ],
+                  ),
                 )
               ],
             ),
@@ -722,10 +720,16 @@ class _TakePictureState extends State<TakePicture> {
       ),
     );
   }
+
   Future uploadImage() async {
-    showDialog(context: context, builder: (context){
-      return Center(child: CircularProgressIndicator(color: flyOrange2,));
-    });
+    showDialog(
+        context: context,
+        builder: (context) {
+          return Center(
+              child: CircularProgressIndicator(
+            color: flyOrange2,
+          ));
+        });
     tokenFromApi = await getToken();
     jobIdFromApi = await getJobId();
     var id = await getId();
@@ -741,48 +745,47 @@ class _TakePictureState extends State<TakePicture> {
     print("Image: $base64Image");
 
     var mapData = json.encode({
-      "numOfFlyersDistributed" : numOfFlyersDistributed.text.trim(),
+      "numOfFlyersDistributed": numOfFlyersDistributed.text.trim(),
       "numOfDoorHangersDistributed": numOfDoorHangersDistributed.text.trim(),
       "latitude": lat,
-      "longitude" : long,
-      "address" : "$subLocality,$locality,$state,$country",
-      "city" : cityController.text.trim(),
-      "images" : ["data:image/jpg;base64,$base64Image"]
+      "longitude": long,
+      "address": "$subLocality,$locality,$state,$country",
+      "city": cityController.text.trim(),
+      "images": ["data:image/jpg;base64,$base64Image"]
     });
     print("JSON DATA : ${mapData}");
     var token = "$tokenFromApi";
     http.Response response = await http.post(Uri.parse("$apiURL/$jobId"),
-        headers: {
-          "Content-Type": "application/json",
-          "x-access-token" : token
-        },
+        headers: {"Content-Type": "application/json", "x-access-token": token},
         body: mapData);
     var data = jsonDecode(response.body);
     print("This is my report id : ${data["data"]["_id"]}");
     var reportId = data["data"]["_id"];
-    if(response.statusCode == 200){
+    if (response.statusCode == 200) {
       Navigator.of(context).pop();
       Get.offAll(JobTracking());
       Fluttertoast.showToast(msg: "Report Submitted Successfully!");
       functionForSocket({
         'type': 'Job Report',
         'title': 'Job Report Submission',
-        'description' : "$userName have submitted reports for the job $jobTitle",
+        'description': "$userName have submitted reports for the job $jobTitle",
         'jobId': jobId,
-        'distributorId' : id,
-        'reportId' : reportId,
+        'distributorId': id,
+        'reportId': reportId,
       });
     }
   }
-  Future pickImageMethod(ImageSource source,int imageQuality) async{
-    try{
-      final image = await ImagePicker().pickImage(imageQuality: imageQuality,source:source);
+
+  Future pickImageMethod(ImageSource source, int imageQuality) async {
+    try {
+      final image = await ImagePicker()
+          .pickImage(imageQuality: imageQuality, source: source);
       if (image == null) return;
       final imageTemporary = File(image.path);
-      setState((){
+      setState(() {
         this.image = imageTemporary;
       });
-    }on PlatformException catch (e){
+    } on PlatformException catch (e) {
       print("Failed to pick image:$e");
     }
   }
