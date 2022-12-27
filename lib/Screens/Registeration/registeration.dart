@@ -1720,7 +1720,7 @@ class _RegistrationState extends State<Registration> {
               ],
             ));
         print("DataForResponse: ${data}");
-        print("Response ye hai : ${response.statusCode}");
+        print("Response : ${response.statusCode}");
       } else if (response.statusCode == 409) {
         Get.defaultDialog(
             title: "Error found",

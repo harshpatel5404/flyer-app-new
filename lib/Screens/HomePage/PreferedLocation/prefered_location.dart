@@ -1,11 +1,6 @@
 import 'dart:convert';
-import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:flyerapp/Screens/Api/all_api.dart';
 import 'package:flyerapp/Screens/HomePage/homepage.dart';
-import 'package:flyerapp/Screens/LoginScreen/login_screen.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_place/google_place.dart';
@@ -14,7 +9,6 @@ import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:http/http.dart' as http;
 import 'package:geocoding/geocoding.dart';
-
 import '../../SharedPrefrence/sharedprefrence.dart';
 
 class PreferedLocation extends StatefulWidget {
@@ -27,6 +21,8 @@ class PreferedLocation extends StatefulWidget {
 class _PreferedLocationState extends State<PreferedLocation> {
   TextEditingController stateController = TextEditingController(text: "");
   TextEditingController cityController = TextEditingController(text: "");
+  TextEditingController locationcontroller = TextEditingController(text: "");
+
   late GooglePlace? googlePlace;
   double? lat;
   double? long;
@@ -35,6 +31,15 @@ class _PreferedLocationState extends State<PreferedLocation> {
   String? state;
   String? locality;
   String? subLocality;
+
+  List<AutocompletePrediction> predictions = [];
+
+  @override
+  void initState() {
+    super.initState();
+    googlePlace = GooglePlace("AIzaSyBMrf4s0FyFlJyzJ6bVNizbhJmKlC-p3h4");
+  }
+
   Future getLatLong() async {
     bool serviceEnabled;
     LocationPermission permission;
@@ -42,126 +47,104 @@ class _PreferedLocationState extends State<PreferedLocation> {
       var H = MediaQuery.of(context).size.height;
       var W = MediaQuery.of(context).size.width;
       serviceEnabled = await Geolocator.isLocationServiceEnabled();
-      if (!serviceEnabled) {
-        return Get.defaultDialog(
-            title: "",
-            titleStyle: TextStyle(
-                fontSize: 15, fontFamily: 'OpenSans-Bold', color: flyBlack2),
-            content: Column(
-              children: [
-                Text(
-                  "Please turn on your device location!",
-                  style: TextStyle(
-                      fontSize: 13,
-                      fontFamily: 'OpenSans-Bold',
-                      color: flyBlack2),
-                ),
-                SizedBox(
-                  height: H * 0.02,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        Get.back();
-                      },
-                      child: Container(
-                          height: H * 0.05,
-                          width: W * 0.2,
-                          decoration: BoxDecoration(
-                              color: flyOrange2,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(8))),
-                          child: Center(
-                              child: Text(
-                            "Ok",
-                            style: TextStyle(
-                                fontSize: 13,
-                                fontFamily: 'OpenSans-Bold',
-                                color: Colors.white),
-                          ))),
-                    ),
-                    SizedBox(
-                      width: W * 0.05,
-                    ),
-                    InkWell(
-                      onTap: () {
-                        Get.back();
-                      },
-                      child: Container(
-                          height: H * 0.05,
-                          width: W * 0.2,
-                          decoration: BoxDecoration(
-                              color: flyGray3,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(8))),
-                          child: Center(
-                              child: Text(
-                            "cancel",
-                            style: TextStyle(
-                                fontSize: 13,
-                                fontFamily: 'OpenSans-Bold',
-                                color: Colors.white),
-                          ))),
-                    ),
-                  ],
-                )
-              ],
-            ));
-      }
+      // if (!serviceEnabled) {
+      //   return Get.defaultDialog(
+      //       title: "",
+      //       titleStyle: TextStyle(
+      //           fontSize: 15, fontFamily: 'OpenSans-Bold', color: flyBlack2),
+      //       content: Column(
+      //         children: [
+      //           Text(
+      //             "Please turn on your device location!",
+      //             style: TextStyle(
+      //                 fontSize: 13,
+      //                 fontFamily: 'OpenSans-Bold',
+      //                 color: flyBlack2),
+      //           ),
+      //           SizedBox(
+      //             height: H * 0.02,
+      //           ),
+      //           Row(
+      //             mainAxisAlignment: MainAxisAlignment.center,
+      //             children: [
+      //               InkWell(
+      //                 onTap: () {
+      //                   Get.back();
+      //                 },
+      //                 child: Container(
+      //                     height: H * 0.05,
+      //                     width: W * 0.2,
+      //                     decoration: BoxDecoration(
+      //                         color: flyOrange2,
+      //                         borderRadius:
+      //                             BorderRadius.all(Radius.circular(8))),
+      //                     child: Center(
+      //                         child: Text(
+      //                       "Ok",
+      //                       style: TextStyle(
+      //                           fontSize: 13,
+      //                           fontFamily: 'OpenSans-Bold',
+      //                           color: Colors.white),
+      //                     ))),
+      //               ),
+      //               SizedBox(
+      //                 width: W * 0.05,
+      //               ),
+      //               InkWell(
+      //                 onTap: () {
+      //                   Get.back();
+      //                 },
+      //                 child: Container(
+      //                     height: H * 0.05,
+      //                     width: W * 0.2,
+      //                     decoration: BoxDecoration(
+      //                         color: flyGray3,
+      //                         borderRadius:
+      //                             BorderRadius.all(Radius.circular(8))),
+      //                     child: Center(
+      //                         child: Text(
+      //                       "cancel",
+      //                       style: TextStyle(
+      //                           fontSize: 13,
+      //                           fontFamily: 'OpenSans-Bold',
+      //                           color: Colors.white),
+      //                     ))),
+      //               ),
+      //             ],
+      //           )
+      //         ],
+      //       ));
+      // }
       permission = await Geolocator.checkPermission();
       if (permission == LocationPermission.denied) {
         permission = await Geolocator.requestPermission();
-        Position position = await Geolocator.getCurrentPosition(
-            desiredAccuracy: LocationAccuracy.medium);
-        currentPosition = position;
-        lat = position.latitude;
-        print(lat);
-        long = position.longitude;
-        print(long);
-        var location = ({
-          "lat": lat,
-          "lng": long,
-        });
-        setState(() {});
-        List<Placemark> placemark = await placemarkFromCoordinates(lat!, long!);
-        print(placemark[0].toString());
-        setState(() {
-          subLocality = placemark[0].subLocality;
-          locality = placemark[0].locality;
-          state = placemark[0].administrativeArea;
-          country = placemark[0].country;
-        });
-      } else if (permission == LocationPermission.whileInUse) {
-        Position position = await Geolocator.getCurrentPosition(
-            desiredAccuracy: LocationAccuracy.medium);
-        currentPosition = position;
-        lat = position.latitude;
-        print(lat);
-        long = position.longitude;
-        print(long);
-        var location = ({
-          "lat": lat,
-          "lng": long,
-        });
-        setState(() {});
-        List<Placemark> placemark = await placemarkFromCoordinates(lat!, long!);
-        print(placemark[0].toString());
-        setState(() {
-          subLocality = placemark[0].subLocality;
-          locality = placemark[0].locality;
-          state = placemark[0].administrativeArea;
-          country = placemark[0].country;
-        });
       }
+      Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.medium);
+      currentPosition = position;
+      lat = position.latitude;
+      print(lat);
+      long = position.longitude;
+      print(long);
+      var location = ({
+        "lat": lat,
+        "lng": long,
+      });
+      setState(() {});
+      List<Placemark> placemark = await placemarkFromCoordinates(lat!, long!);
+      print(placemark[0].toString());
+      setState(() {
+        subLocality = placemark[0].subLocality;
+        locality = placemark[0].locality;
+        state = placemark[0].administrativeArea;
+        country = placemark[0].country;
+      });
     } catch (e) {
       print(e.toString());
       Get.snackbar("Error", e.toString());
     }
   }
 
-  List<AutocompletePrediction> predictions = [];
   void autoCompleteSearch(String value) async {
     var result = await googlePlace?.autocomplete.get(value);
     if (result != null && result.predictions != null && mounted) {
@@ -205,7 +188,7 @@ class _PreferedLocationState extends State<PreferedLocation> {
                       "  Add Your Preferred Location",
                       style: TextStyle(
                           fontFamily: 'OpenSans-Semibold',
-                          fontSize: 19,
+                          fontSize: 18,
                           fontWeight: FontWeight.bold),
                     )
                   ],
@@ -269,7 +252,6 @@ class _PreferedLocationState extends State<PreferedLocation> {
                 ),
                 Container(
                     width: W * 0.9,
-                    height: H * 0.05,
                     decoration: BoxDecoration(
                         boxShadow: [
                           BoxShadow(
@@ -285,9 +267,12 @@ class _PreferedLocationState extends State<PreferedLocation> {
                       onChanged: (value) {
                         if (value.isNotEmpty) {
                           autoCompleteSearch(value);
-                          //places api
                         } else {
-                          //clear out the reuslts
+                          if (predictions.length > 0 && mounted) {
+                            setState(() {
+                              predictions = [];
+                            });
+                          }
                         }
                       },
                       decoration: InputDecoration(
@@ -307,11 +292,35 @@ class _PreferedLocationState extends State<PreferedLocation> {
                                   BorderSide(color: Colors.transparent))),
                     )),
                 SizedBox(
+                  height: 10,
+                ),
+                ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: predictions.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      leading: CircleAvatar(
+                        child: Icon(
+                          Icons.pin_drop,
+                          color: Colors.white,
+                        ),
+                      ),
+                      title: Text(predictions[index].description.toString()),
+                      onTap: () {
+                        cityController.text =
+                            predictions[index].description.toString();
+                        predictions = [];
+                        setState(() {});
+                      },
+                    );
+                  },
+                ),
+                SizedBox(
                   height: H * 0.05,
                 ),
                 InkWell(
                   onTap: () {
-                    updateLocation(lat!, long!, cityController.text);
+                    updateLocation(lat!.toDouble(), long!, cityController.text);
                   },
                   child: Container(
                     width: W * 0.9,

@@ -4,21 +4,17 @@ import 'package:flyerapp/Screens/HomePage/Help/chat_controller.dart';
 import 'package:flyerapp/Screens/HomePage/Help/help.dart';
 import 'package:flyerapp/Screens/HomePage/Help/notification_service.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flyerapp/Screens/SharedPrefrence/sharedprefrence.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import '../../../Constants/colors.dart';
-import '../../Api/all_api.dart';
 import '../../Job Details/job_details.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import '../../Profile/edit_profile.dart';
 import '../../UserModel/job_model.dart';
-import '../../UserModel/user_model.dart';
 
 class HomePageMain extends StatefulWidget {
   const HomePageMain({

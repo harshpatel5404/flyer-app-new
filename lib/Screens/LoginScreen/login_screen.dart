@@ -587,6 +587,7 @@ class _LoginScreenState extends State<LoginScreen> {
         //setAddress(data["data"]["data"]["locations"]["address"]);
         Get.to(PreferedLocation());
       } else if (response.statusCode == 403) {
+        print(response.body);
         Navigator.of(context).pop();
         Get.defaultDialog(
             title: "Error found",
@@ -731,31 +732,60 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  Future<UserCredential> signInWithFacebook() async {
-    final LoginResult loginResult = await FacebookAuth.instance
-        .login(permissions: ['email', 'public_profile', 'user_birthday']);
+  Future signInWithFacebook() async {
+    try {
+      final LoginResult loginResult = await FacebookAuth.instance
+          .login(permissions: ['email', 'public_profile']);
 
-    final OAuthCredential facebookAuthCredential =
-        FacebookAuthProvider.credential(loginResult.accessToken!.token);
-
-    final userData = await FacebookAuth.instance.getUserData();
-    print(userData);
-
-    final userEmail = userData['email'];
-    final userName = userData['name'];
-    print(userEmail);
-    if (loginResult.status == LoginStatus.success) {
-      setFacebookEmail(userEmail);
-      setFacebookName(userName);
-      Get.to(FacebookRegistration());
+      final OAuthCredential facebookAuthCredential =
+          FacebookAuthProvider.credential(loginResult.accessToken!.token);
+      final userData = await FacebookAuth.instance.getUserData();
+      print(userData);
+      final userEmail = userData['email'];
+      final userName = userData['name'];
+      print(userEmail);
+      if (loginResult.status == LoginStatus.success) {
+        setFacebookEmail(userEmail);
+        setFacebookName(userName);
+        Get.to(FacebookRegistration());
+      }
+      return FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
+    } catch (e) {
+      print("facebook error $e");
     }
-    return FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
   }
 
-  googleLogin() async {
+  // Future<String?> signInWithFacebook() async {
+  //   try {
+  //     final FirebaseAuth _auth = FirebaseAuth.instance;
+  //     final _instance = FacebookAuth.instance;
+  //     final result = await _instance.login(permissions: ['email']);
+  //     if (result.status == LoginStatus.success) {
+  //       final OAuthCredential credential =
+  //           FacebookAuthProvider.credential(result.accessToken!.token);
+  //       final a = await _auth.signInWithCredential(credential);
+  //       await _instance.getUserData().then((userData) async {
+  //         await _auth.currentUser!.updateEmail(userData['email']);
+  //       });
+
+        
+  //     } else if (result.status == LoginStatus.cancelled) {
+  //       print("cancelled");
+  //       return 'Login cancelled';
+  //     } else {
+  //       print("error");
+  //       return 'Error';
+  //     }
+  //   } catch (e) {
+  //     return e.toString();
+  //   }
+  // }
+
+  Future googleLogin() async {
     print("googleLogin method Called");
-    GoogleSignIn _googleSignIn = GoogleSignIn();
+
     try {
+      GoogleSignIn _googleSignIn = GoogleSignIn();
       var reslut = await _googleSignIn.signIn();
       if (reslut == null) {
         return;
@@ -784,10 +814,8 @@ class _LoginScreenState extends State<LoginScreen> {
     };
     print("JSON DATA : ${mapData}");
     http.Response response = await http.post(Uri.parse(apiURL), body: mapData);
-
     var data = jsonDecode(response.body);
     print("Data: ${data}");
-
     loading ? CircularProgressIndicator() : Get.to(HomePage());
   }
 
