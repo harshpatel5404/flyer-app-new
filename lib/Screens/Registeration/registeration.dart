@@ -153,62 +153,62 @@ class _RegistrationState extends State<Registration> {
                                     left: H * 0.01, bottom: H * 0.009),
                                 child: InkWell(
                                   onTap: () async {
-                                    var status = await Permission.camera.status;
-                                    if (status.isDenied) {
-                                      Get.defaultDialog(
-                                          title: "",
-                                          titleStyle: TextStyle(
-                                              fontSize: 15,
-                                              fontFamily: 'OpenSans-Bold',
-                                              color: flyBlack2),
-                                          content: Column(
-                                            children: [
-                                              Text(
-                                                "Go to settings for allow the camera permission.",
-                                                style: TextStyle(
-                                                    fontSize: 13,
-                                                    fontFamily: 'OpenSans-Bold',
-                                                    color: flyBlack2),
-                                              ),
-                                              SizedBox(
-                                                height: H * 0.02,
-                                              ),
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  InkWell(
-                                                    onTap: () {
-                                                      Get.back();
-                                                    },
-                                                    child: Container(
-                                                        height: H * 0.05,
-                                                        width: W * 0.2,
-                                                        decoration: BoxDecoration(
-                                                            color: flyOrange2,
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .all(Radius
-                                                                        .circular(
-                                                                            8))),
-                                                        child: Center(
-                                                            child: Text(
-                                                          "Ok",
-                                                          style: TextStyle(
-                                                              fontSize: 13,
-                                                              fontFamily:
-                                                                  'OpenSans-Bold',
-                                                              color:
-                                                                  Colors.white),
-                                                        ))),
-                                                  ),
-                                                ],
-                                              )
-                                            ],
-                                          ));
-                                    } else {
-                                      pickImage(ImageSource.camera);
-                                    }
+                                    // var status = await Permission.camera.status;
+                                    // if (status.isDenied) {
+                                    //   Get.defaultDialog(
+                                    //       title: "",
+                                    //       titleStyle: TextStyle(
+                                    //           fontSize: 15,
+                                    //           fontFamily: 'OpenSans-Bold',
+                                    //           color: flyBlack2),
+                                    //       content: Column(
+                                    //         children: [
+                                    //           Text(
+                                    //             "Go to settings for allow the camera permission.",
+                                    //             style: TextStyle(
+                                    //                 fontSize: 13,
+                                    //                 fontFamily: 'OpenSans-Bold',
+                                    //                 color: flyBlack2),
+                                    //           ),
+                                    //           SizedBox(
+                                    //             height: H * 0.02,
+                                    //           ),
+                                    //           Row(
+                                    //             mainAxisAlignment:
+                                    //                 MainAxisAlignment.center,
+                                    //             children: [
+                                    //               InkWell(
+                                    //                 onTap: () {
+                                    //                   Get.back();
+                                    //                 },
+                                    //                 child: Container(
+                                    //                     height: H * 0.05,
+                                    //                     width: W * 0.2,
+                                    //                     decoration: BoxDecoration(
+                                    //                         color: flyOrange2,
+                                    //                         borderRadius:
+                                    //                             BorderRadius
+                                    //                                 .all(Radius
+                                    //                                     .circular(
+                                    //                                         8))),
+                                    //                     child: Center(
+                                    //                         child: Text(
+                                    //                       "Ok",
+                                    //                       style: TextStyle(
+                                    //                           fontSize: 13,
+                                    //                           fontFamily:
+                                    //                               'OpenSans-Bold',
+                                    //                           color:
+                                    //                               Colors.white),
+                                    //                     ))),
+                                    //               ),
+                                    //             ],
+                                    //           )
+                                    //         ],
+                                    //       ));
+                                    // } else {
+                                    // }
+                                    pickImage(ImageSource.camera);
                                   },
                                   child: Row(
                                     children: [
@@ -1803,9 +1803,6 @@ class _RegistrationState extends State<Registration> {
     imageMime1 = lookupMimeType(file1!.path);
     print(imageMime2);
     imageMime2 = lookupMimeType(file2!.path);
-    print(imageMime2);
-    print("File: $base64File");
-    print("File2: $base64File2");
 
     var mapData = json.encode({
       "full_name": fullName,
@@ -1818,16 +1815,16 @@ class _RegistrationState extends State<Registration> {
       "document_back": "data:$imageMime2;base64,$base64File2",
       "document_type": _myState
     });
-    print("JSON DATA : ${mapData}");
-    print(imageMime1);
-    print(imageMime2);
+    print("SignUp DATA : ${mapData}");
 
-    http.Response response = await http.post(Uri.parse(apiURL),
-        headers: {
-          "Content-Type": "application/json",
-          'Accept': 'application/json',
-        },
-        body: mapData);
+    http.Response response = await http.post(
+      Uri.parse(apiURL),
+      headers: {
+        "Content-Type": "application/json",
+        'Accept': 'application/json',
+      },
+      body: mapData,
+    );
     print("This is my response : ${response.body}");
     setState(() {
       isLoading = true;
@@ -1883,8 +1880,6 @@ class _RegistrationState extends State<Registration> {
                 )
               ],
             ));
-        print("DataForResponse: $data");
-        print("Response ye hai : ${response.statusCode}");
       } else if (response.statusCode == 409) {
         Navigator.of(context).pop();
         Get.defaultDialog(
@@ -1931,6 +1926,8 @@ class _RegistrationState extends State<Registration> {
             ));
         var data = jsonDecode(response.body);
         print("Data: ${data}");
+      } else {
+        print("This is my response : ${response.body}");
       }
     } catch (e) {
       print(e.toString());
@@ -1964,52 +1961,6 @@ class _RegistrationState extends State<Registration> {
       print('fail');
     }
   }
-
-  // Future uploadDisplayPicture(
-  //     fullName, email, password, confirmPassword, phoneNumber) async {
-  //   // print('file ${drivingLicense.path}');
-  //   // print('file ${displayPicture.path}');
-  //   var stream = http.ByteStream(image!.openRead());
-  //   stream.cast();
-  //   var length = await image!.length();
-
-  //   var request = http.MultipartRequest(
-  //       'POST',
-  //       Uri.parse(
-  //         "https://ondemandflyers.com:8087/distributor/signup",
-  //       ));
-  //   String value1 = '';
-  //   request.fields.addAll({
-  //     "full_name": fullName,
-  //     "email": email,
-  //     "password": password,
-  //     "confirm_password": confirmPassword,
-  //     "phone_number": phoneNumber,
-  //   });
-  //   var multiPart = http.MultipartFile(
-  //     'display_picture',
-  //     stream,
-  //     length,
-  //     filename: image!.path,
-  //   );
-  //   request.files.add(multiPart);
-  //   var multiPart2 = http.MultipartFile(
-  //     'driving_license',
-  //     stream,
-  //     length,
-  //     filename: file!.path,
-  //   );
-  //   request.files.add(multiPart2);
-  //   var response = await request.send();
-  //   if (response.statusCode == 200) {
-  //     print('Image Uploaded');
-  //     print('urlofpost = ${request.fields}');
-  //   } else {
-  //     print(response.statusCode);
-  //     print('fail');
-  //     print(image!.path);
-  //   }
-  // }
 
   Future<void> uploadImage() async {
     var stream = http.ByteStream(image!.openRead());
@@ -2048,7 +1999,7 @@ class _RegistrationState extends State<Registration> {
           .set({
         "full_name": FirebaseAuth.instance.currentUser?.displayName,
         "email": FirebaseAuth.instance.currentUser?.email,
-        "phone_number": phoneController.text.trim(),
+        "phone_number": int.parse(phoneController.text),
         "password": passwordController.text.trim(),
         "confirm_password": confirmPasswordController.text.trim(),
         "id": FirebaseAuth.instance.currentUser?.uid,
