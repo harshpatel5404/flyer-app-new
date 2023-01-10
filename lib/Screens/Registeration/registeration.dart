@@ -1729,6 +1729,7 @@ class _RegistrationState extends State<Registration> {
             content: Column(
               children: [
                 Text(
+                  
                   "Email Already Exist",
                   style: TextStyle(
                       fontSize: 13,
